@@ -1,0 +1,183 @@
+#layout {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+
+/*----header----*/
+
+header {
+    background: rgb(0, 158, 254);
+}
+
+header>.logo {
+    text-align: center;
+}
+
+
+/*---menu----*/
+
+nav {
+    background-color: blue;
+    line-height: 40px;
+}
+
+nav a {
+    font-variant: small-caps;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+nav a:hover {
+    color: wheat;
+    text-decoration: underline;
+}
+
+nav .right {
+    float: right;
+}
+
+
+/*----Banner----*/
+
+.banner {
+    display: flex;
+}
+
+.banner img {
+    width: 100%;
+}
+
+
+/*----form-----*/
+
+.search {
+    background-color: blue;
+    display: flex;
+    padding: 10px 0;
+    justify-content: space-evenly;
+}
+
+.search input {
+    padding: 10px 10px;
+    width: 70%;
+}
+
+.search button {
+    background: orangered;
+    color: white;
+}
+
+
+/*----acticle---*/
+
+.title {
+    text-align: center;
+}
+
+.title h3 {
+    text-transform: uppercase;
+    color: brown;
+}
+
+.title h3:hover {
+    color: blueviolet;
+}
+
+
+/*-----phần 1---*/
+
+.col {
+    margin-top: 20px;
+    justify-content: space-between;
+    display: flex;
+}
+
+.pro {
+    border: 1px solid black;
+    padding: 20px 55px;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.pro .name {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.pro .name:hover {
+    color: blueviolet;
+}
+
+.pro img {
+    max-width: 200px;
+    margin-bottom: 10px;
+}
+
+.pro .price {
+    color: red;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.pro .price:hover {
+    color: blueviolet;
+}
+
+.pro .price del {
+    color: gray;
+    font-size: small;
+}
+
+
+/*----Phần 2----*/
+
+.row {
+    border: 1px solid black;
+    margin-top: 20px;
+}
+
+.box {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+
+.box img {
+    width: 500px;
+    height: 200px;
+}
+
+.text {
+    width: 40%;
+    margin-top: 10px;
+}
+
+.header {
+    color: red;
+    font-weight: bold;
+}
+
+.header:hover {
+    color: blueviolet;
+}
+
+.content {
+    margin-top: 10px;
+    line-height: 2rem;
+    text-align: justify;
+}
+
+
+/*----footer---*/
+
+footer {
+    display: flex;
+    margin-top: 10px;
+    text-align: center;
+    /*justify-content: center;*/
+    background: blue;
+    color: white;
+}
