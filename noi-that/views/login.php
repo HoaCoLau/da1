@@ -21,8 +21,8 @@
                 </div>
                 <div class="content-button">
                     <a href="<?= BASE_URL . '?act=sign-up' ?>">
-                    <button>Sign up</button>
-                </a>
+                        <button>Sign up</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -41,11 +41,19 @@
             </div>
             <form action="<?= BASE_URL . '?act=check-login' ?>" method="post">
                 <div class="noti">Or user your email account.</div>
-                    <?php if (isset($_SESSION['error'])) { ?>
-                        <p class="text-danger"><?= $_SESSION['error'] ?></p>
-                    <?php }else{
-                        ?><p>Vui long dang nhap</p><?php
-                    } ?>
+                <?php if (isset($_SESSION['error'])): ?>
+                    <?php if (is_array($_SESSION['error'])): ?>
+                        <ul class="text-danger">
+                            <?php foreach ($_SESSION['error'] as $error): ?>
+                                <li><?= htmlspecialchars($error) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p class="text-danger"><?= htmlspecialchars($_SESSION['error']) ?></p>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <p>Vui lòng đăng nhập</p>
+                <?php endif; ?>
                 <div class="box-input">
                     <div class="box-user">
                         <i class="fa-solid fa-envelope"></i>

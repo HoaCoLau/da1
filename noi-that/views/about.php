@@ -11,7 +11,7 @@
     <title>Shop</title>
 </head>
 <body>
-    <div class="header"  style="background-color: beige;">
+    <div class="header" >
         <div class="content">
             <div class="box-menu-mobile">
                 <button>

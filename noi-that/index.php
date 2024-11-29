@@ -15,18 +15,17 @@ require_once './models/SanPham.php';
 $act = $_GET['act'] ?? '/';
 
 match ($act) {
-    '/' => (new HomeController())-> home(),
-    'shop' => (new HomeController())-> shop(),
-    'about' => (new HomeController())-> about(),
-    'admin' => (new HomeController())-> admin(),
-    'chi-tiet-san-pham'=> (new HomeController())->chiTietSanPham(),
-
-
+    '/' => (new HomeController())->home(),
+    'shop' => (new HomeController())->shop(),
+    'about' => (new HomeController())->about(),
+    'admin' => (new HomeController())->admin(),
+    'chi-tiet-san-pham' => (new HomeController())->chiTietSanPham(),
+    'san-pham-theo-danh-muc' => (new HomeController())->sanPhamTheoDanhMuc(),
     'login' => (new HomeController())->formLogin(),
     'check-login' => (new HomeController())->login(),
     'logout' => (new HomeController())->logout(),
     'sign-up' => (new HomeController())->formSignUp(),
     'post-sign-up' => (new HomeController())->postSignUp(),
     'post-comment' => (new HomeController())->postComment(),
-
+    default => (new HomeController())->home(), // Thêm default để xử lý các trường hợp không khớp
 };

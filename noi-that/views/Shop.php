@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="header" style="background-color: beige;">
+    <div class="header">
         <div class="content">
             <div class="box-menu-mobile">
                 <button>
@@ -81,15 +81,16 @@
             </div>
             <div class="box-list-product">
                 <div class="box-shop-product">
-                    <a href="">
+                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16'?>">
                         <img src="./uploads/Shop/categories-19.jpg" alt="">
                         <div class="name-product">
+                        
                             <p>Armchairs</p>
                         </div>
                     </a>
                 </div>
                 <div class="box-shop-product">
-                    <a href="">
+                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16'?>">
                         <img src="./uploads/Shop/categories-18.jpg" alt="">
                         <div class="name-product">
                             <p>Outdoor</p>
@@ -97,7 +98,7 @@
                     </a>
                 </div>
                 <div class="box-shop-product">
-                    <a href="">
+                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16'?>">
                         <img src="./uploads/Shop/categories-6.jpg" alt="">
                         <div class="name-product">
                             <p>Sofas</p>
@@ -105,7 +106,7 @@
                     </a>
                 </div>
                 <div class="box-shop-product">
-                    <a href="">
+                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16'?>">
                         <img src="./uploads/Shop/categories-10.jpg" alt="">
                         <div class="name-product">
                             <p>Storage</p>
@@ -117,17 +118,20 @@
     </div>
     <div class="box-shop">
         <div class="box-sidebar">
-            <div class="first-sidebar">
-                <div class="title-sidebar">
-                    Categories
-                </div>
-                <?php foreach ($listDanhMuc as $key => $danhMuc): ?>
-                    <div class="in-sidebar">
-                        <div class="name"><?= $danhMuc['ten_danh_muc'] ?></div>
-                        <div class="box-number"></div>
+                <div class="first-sidebar">
+                    <div class="title-sidebar">
+                        Categories
                     </div>
-                <?php endforeach; ?>
-            </div>
+                    <?php foreach ($listDanhMuc as $key => $danhMuc): ?>
+                        <div class="in-sidebar">
+                            <div class="name">
+                                <!-- Cập nhật liên kết đến trang lọc sản phẩm -->
+                                <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=' . $danhMuc['id'] ?>"><?= $danhMuc['ten_danh_muc'] ?></a>
+                            </div>
+                            <div class="box-number"></div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
 
             <div class="all-box-brands">
                 <div class="title-brands">Brands</div>
@@ -159,30 +163,25 @@
             <div class="header-product">
 
             </div>
+            
             <div class="all-box-new-product">
+
                 <?php foreach ($listSanPham as $key => $sanPham): ?>
                     <div class="new-product-1">
                         <div class="pic-product-1">
                             <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
                                 <img id="Pic-product-1" src="<?= BASE_URL . $sanPham['hinh_anh'] ?>" alt="">
-                                <script>
-                                    let newProduct = document.getElementById('Pic-product-1');
-
-                                    newProduct.addEventListener('mouseout', function() {
-                                        newProduct.src = '<?= BASE_URL . $sanPham['hinh_anh'] ?>';
-                                    });
-                                </script>
                             </a>
-                                <div class="box-icon-new-product">
-                                    <i style="font-size: 19px;" id="cart-Product" class="fa-solid fa-cart-shopping"></i>
-                                    <i style="font-size: 18px;" id="heart-Product" class="fa-solid fa-heart"></i>
-                                    <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
-                                        <i style="font-size: 18px;" id="search-Product" class="fa-solid fa-magnifying-glass"></i>
-                                    </a>
-                                </div>
+                            <div class="box-icon-new-product">
+                                <i style="font-size: 19px;" id="cart-Product" class="fa-solid fa-cart-shopping"></i>
+                                <i style="font-size: 18px;" id="heart-Product" class="fa-solid fa-heart"></i>
+                                <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
+                                    <i style="font-size: 18px;" id="search-Product" class="fa-solid fa-magnifying-glass"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="box-star" style="width: 100%; height: 23px;">
-                            <i style="color: #fcad02; margin-left: 0;" class="fa-solid fa-star"></i>
+                            <i style="color: #fcad02;" class="fa-solid fa-star"></i>
                             <i style="color: #fcad02;" class="fa-solid fa-star"></i>
                             <i style="color: #fcad02;" class="fa-solid fa-star"></i>
                             <i style="color: #fcad02;" class="fa-solid fa-star"></i>
@@ -192,19 +191,17 @@
                         <div class="title-new-product">
                             <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
                                 <?= $sanPham['ten_san_pham'] ?></a>
-                        </div><br>
+                        </div>
                         <div>
-                            <?php if ($sanPham['gia_khuyen_mai'] && $sanPham['gia_khuyen_mai'] >0 ) { ?>
-                                <span class="price-old"><?= formatPrice($sanPham['gia_san_pham']).'đ'  ?> </span>
-                                <span class="price-new"><?= formatPrice($sanPham['gia_khuyen_mai']).'đ' ?></span>
-
-                            <?php } else { ?>  
-                                <span class="price-old" style="text-decoration: none; color:red; font-size:larger;" ><?= formatPrice($sanPham['gia_san_pham']).'đ'  ?></span>
-                            <?php } ?>
+                            <?php if ($sanPham['gia_khuyen_mai'] && $sanPham['gia_khuyen_mai'] > 0): ?>
+                                <span class="price-old"><?= formatPrice($sanPham['gia_san_pham']) . 'đ' ?></span>
+                                <span class="price-new"><?= formatPrice($sanPham['gia_khuyen_mai']) . 'đ' ?></span>
+                            <?php else: ?>
+                                <span class="price-old" style="text-decoration: none; color:red; font-size:larger;"><?= formatPrice($sanPham['gia_san_pham']) . 'đ' ?></span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
-
             </div>
 
         </div>
@@ -321,6 +318,7 @@
 </body>
 
 </html>
+
 <script>
     $(function() {
         $("#example1").DataTable({

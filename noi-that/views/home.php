@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="header" style="background-color: beige;">
+    <div class="header">
         <div class="content">
             <div class="box-menu-mobile">
                 <button>
@@ -60,7 +60,7 @@
                 <a href="" class="box-cart">
                     <i class="fa-solid fa-cart-shopping cart"></i>
                 </a>
-            </div>  
+            </div>
         </div>
     </div>
     <div class="banner">
@@ -70,7 +70,8 @@
                 <div class="title">Design for life</div>
                 <div class="text-title">Say hello to our brand new arrivals.</div>
                 <div class="all-button">
-                    <button>Shop all new in</button>
+                    <a href="<?= BASE_URL . '?act=shop' ?>">
+                        <button>Shop all new in</button></a>
                 </div>
             </div>
             <button id="left" onclick="ret()"><i class="fa-solid fa-arrow-left"></i></button>
@@ -85,21 +86,21 @@
         </div>
     </div>
     <div class="box-room">
-        <a href="">
+        <a href="<?= BASE_URL . '?act=shop' ?>">
             <div class="living-room">
                 <img src="uploads/Living-room.jpg" alt="">
                 <div class="title-Living-room">Living room</div>
                 <div class="Shop-col">Shop Collection</div>
             </div>
         </a>
-        <a href="">
+        <a href="<?= BASE_URL . '?act=shop' ?>">
             <div class="bed-room">
                 <img src="uploads/bedroom.jpg" alt="">
                 <div class="title-bed-room">Bed room</div>
                 <div class="Shop-col">Shop Collection</div>
             </div>
         </a>
-        <a href="">
+        <a href="<?= BASE_URL . '?act=shop' ?>">
             <div class="ketchen-room">
                 <img src="uploads/ketchen-room.jpg" alt="">
                 <div class="title-kitchen-room">kitchen room</div>
@@ -113,31 +114,31 @@
         </div>
         <div class="all-box-product">
             <div class="box-product">
-                <a href="">
+                <a href="<?= BASE_URL . '?act=shop' ?>">
                     <img src="uploads/categories-9.jpg" alt="">
                     <div class="title-product">Armchairs</div>
                 </a>
             </div>
             <div class="box-product">
-                <a href="#1">
+                <a href="<?= BASE_URL . '?act=shop' ?>">
                     <img src="uploads/categories-7.jpg" alt="">
                     <div class="title-product">Dining Chairs</div>
                 </a>
             </div>
             <div class="box-product">
-                <a href="#2">
+                <a href="<?= BASE_URL . '?act=shop' ?>">
                     <img src="uploads/categories-6.jpg" alt="">
                     <div class="title-product">Lighting</div>
                 </a>
             </div>
             <div class="box-product">
-                <a href="#3">
+                <a href="<?= BASE_URL . '?act=shop' ?>">
                     <img src="uploads/categories-11.jpg" alt="">
                     <div class="title-product">Sofas</div>
                 </a>
             </div>
             <div class="box-product">
-                <a href="#4">
+                <a href="<?= BASE_URL . '?act=shop' ?>">
                     <img src="uploads/categories-10.jpg" alt="">
                     <div class="title-product">Storage</div>
                 </a>
@@ -158,150 +159,52 @@
                 </div>
             </div>
             <div class="all-new-product">
-                <div class="new-product">
-                    <div class="all-product">
-                        <a href="" style="text-decoration: none;">
-                            <div class="new-img-product">
-                                <img id="Pic-1" src="uploads/products-7-600x600.jpg" alt="">
-                                <div class="note-notif">
-                                    <div class="box-sell">
-                                        -33%
+                <?php foreach ($topSanPham as $product): ?>
+                    <div class="new-product">
+                        <div class="all-product">
+                            <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $product['id'] ?>" style="text-decoration: none;">
+                                <div class="new-img-product">
+                                    <img id="Pic-<?= $product['id'] ?>" src="<?= BASE_URL . $product['hinh_anh'] ?>" alt="">
+                                    <div class="note-notif">
+                                        <?php if ($product['gia_khuyen_mai']): ?>
+                                            <div class="box-sell">
+                                                -<?= round((($product['gia_san_pham'] - $product['gia_khuyen_mai']) / $product['gia_san_pham']) * 100) ?>%
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="title-hot">Hot</div>
                                     </div>
-                                    <div class="title-hot">
-                                        Hot
+                                    <div class="all-box-icon">
+                                        <i class="fa-regular fa-heart"></i>
+                                        <i class="fa-solid fa-magnifying-glass"></i>
                                     </div>
                                 </div>
-                                <div class="all-box-icon">
-                                    <i class="fa-regular fa-heart"></i>
-                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                <div class="contents-new-product">
+                                    <div class="star">
+                                        <?php for ($i = 0; $i < 5; $i++): ?>
+                                            <i class="fa-solid fa-star"></i>
+                                        <?php endfor; ?>
+                                    </div>
+                                    <div class="view-product">
+                                        (<?= $product['luot_xem'] ?> lượt xem)
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="contents-new-product">
-                                <div class="star">
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
+                            </a>
+                            <div class="box-name-product">
+                                <div class="name-product">
+                                    <?= $product['ten_san_pham'] ?>
                                 </div>
-                                <div class="view-product">
-                                    (4 review)
+                                <div class="price-product">
+                                    <?php if ($product['gia_khuyen_mai']): ?>
+                                        <del><?= formatPrice($product['gia_san_pham']) ?></del>
+                                        <span><?= formatPrice($product['gia_khuyen_mai']) ?> </span>
+                                    <?php else: ?>
+                                        <span><?= formatPrice($product['gia_san_pham']) ?></span>
+                                    <?php endif; ?>
                                 </div>
-                            </div>
-                        </a>
-                        <div class="box-name-product">
-                            <div class="name-product">
-                                VB1 Little Petra Lounge Chair & ATD1 Pouf
-                            </div>
-                            <div id="Prict-prod" class="price-product">
-                                <del>$ 150.00</del>
-                                <span>$ 100.00</span>
-                            </div>
-                            <div class="buttom-1">
-                                <button type="submit">
-                                    <i class="fa-solid fa-cart-plus"></i>
-                                    <span>add to cart</span>
-                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="new-product">
-                    <div class="all-product">
-                        <a href="" style="text-decoration: none;">
-                            <div class="new-img-product">
-                                <img id="Pic-2" src="uploads/img-15-9-600x600.jpg" alt="">
-                                <div class="note-notif">
-                                    <!-- <div class="box-sell">
-                                        -33%
-                                    </div> -->
-                                    <div class="title-hot">
-                                        Hot
-                                    </div>
-                                </div>
-                                <div class="all-box-icon">
-                                    <i class="fa-regular fa-heart"></i>
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </div>
-                            </div>
-                            <div class="contents-new-product">
-                                <div class="star">
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <div class="view-product">
-                                    (4 review)
-                                </div>
-                            </div>
-                        </a>
-                        <div class="box-name-product">
-                            <div class="name-product">
-                                Zunkel Schawarz
-                            </div>
-                            <div id="Prict-prod" class="price-product">
-                                <!-- <del>$ 150.00</del> -->
-                                <span>$ 100.00</span>
-                            </div>
-                            <div class="buttom-1">
-                                <button type="submit">
-                                    <i class="fa-solid fa-cart-plus"></i>
-                                    <span>add to cart</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="new-product">
-                    <div class="all-product">
-                        <a href="" style="text-decoration: none;">
-                            <div class="new-img-product">
-                                <img id="Pic-3" src="uploads/products-1-600x600.jpg" alt="">
-                                <div class="note-notif">
-                                    <div class="box-sell">
-                                        -33%
-                                    </div>
-                                    <div class="title-hot">
-                                        Hot
-                                    </div>
-                                </div>
-                                <div class="all-box-icon">
-                                    <i class="fa-regular fa-heart"></i>
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </div>
-                            </div>
-                            <div class="contents-new-product">
-                                <div class="star">
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <div class="view-product">
-                                    (4 review)
-                                </div>
-                            </div>
-                        </a>
-                        <div class="box-name-product">
-                            <div class="name-product">
-                                Drop Dining Chair
-                            </div>
-                            <div id="Prict-prod" class="price-product">
-                                <del>$ 200.00</del>
-                                <span>$ 180.00</span>
-                            </div>
-                            <div class="buttom-1">
-                                <button type="submit">
-                                    <i class="fa-solid fa-cart-plus"></i>
-                                    <span>add to cart</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

@@ -15,14 +15,35 @@ html {
     --color-text-1: #585858;
     --Hover-icon: #FF9B42;
 }
+/* CSS cho thẻ a trong danh mục */
+.box-sidebar .in-sidebar .name a {
+    display: block; /* Để thẻ a chiếm toàn bộ không gian */
+    padding: 10px 15px; /* Thêm khoảng cách bên trong */
+    color: #585858; /* Màu chữ */
+    font-weight: 500; /* Đậm hơn */
+    text-decoration: none; /* Bỏ gạch chân */
+    border-radius: 5px; /* Bo góc */
+    transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển màu */
+}
 
+/* Thay đổi màu sắc khi hover */
+.box-sidebar .in-sidebar .name a:hover {
+    background-color: #FF9B42; /* Màu nền khi hover */
+    color: white; /* Màu chữ khi hover */
+}
+
+/* Thay đổi màu sắc khi thẻ a được chọn (active) */
+.box-sidebar .in-sidebar .name a:active {
+    background-color: #e68a00; /* Màu nền khi nhấn */
+    color: white; /* Màu chữ khi nhấn */
+}
 .box-banner-shop {
     width: 100%;
     height: 476px;
     margin-bottom: 60px;
     background-color: beige;
     padding: 85px 0 90px 0;
-    background: url('https://wpbingosite.com/wordpress/funori/wp-content/uploads/2022/04/bg-breadcrumb.jpg');
+    background: url('../uploads/slider-5.jpg');
     background-size: cover;
 }
 
@@ -141,8 +162,8 @@ html {
 .box-shop .box-sidebar {
     float: left;
     width: 317px;
-    height: 1917px;
-    padding: 0 15px;
+    height: 2500px;
+    padding: 20px 15px;
 }
 
 .box-sidebar .title-sidebar {
@@ -154,7 +175,7 @@ html {
 }
 
 .box-sidebar .in-sidebar {
-    margin-top: 10px;
+    margin-top: 5px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -355,13 +376,14 @@ html {
 .all-box-new-product {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    margin: 20px;
 }
 
 .all-box-new-product .new-product-1 {
     /* width: 317px; */
     width: 287px;
     height: 434px;
+    margin: 20px;
     /* padding: 0 15px; */
     /* background-color: blueviolet; */
 }
