@@ -159,9 +159,8 @@ class HomeController
         if ($idDanhMuc) {
             $listSanPham = $this->modelSanPham->getSanPhamTheoDanhMuc($idDanhMuc);
             $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
-            require_once './views/Shop.php'; // Gọi view tương ứng
+            require_once './views/Shop.php';
         } else {
-            // Xử lý trường hợp không có danh mục
             $listSanPham = $this->modelSanPham->getAllSanPham();
             $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
             require_once './views/Shop.php';
