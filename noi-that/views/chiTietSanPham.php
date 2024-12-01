@@ -153,15 +153,20 @@
                                         <span><?= $sanPham['so_luong'] ?> in stock</span>
                                     </div>
                                     <p class="pro-desc"><?= $sanPham['mo_ta'] ?></p>
+
+                                    <form action="<?= BASE_URL . '?act=them-gio-hang' ?>" method="post" >
                                     <div class="quantity-cart-box d-flex align-items-center">
                                         <h6 class="option-title">qty:</h6>
                                         <div class="quantity">
-                                            <div class="pro-qty"><input type="text" value="1"></div>
+                                            <input type="hidden" name="san_pham_id" value="<?= $sanPham['id']; ?>">
+                                            <div class="pro-qty"><input name="so_luong" type="text" value="1"></div>
                                         </div>
                                         <div class="action_link">
-                                            <a class="btn btn-cart2" href="#">Add to cart</a>
+                                            
+                                            <button class="btn btn-cart2" href="">Add to cart</button>
                                         </div>
                                     </div>
+                                    </form>
                                     <div class="like-icon">
                                         <a class="facebook" href="#"><i class="fa fa-facebook"></i>like</a>
                                         <a class="twitter" href="#"><i class="fa fa-twitter"></i>tweet</a>

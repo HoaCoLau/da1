@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
     <link rel="stylesheet" href="./Css/main.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="./Css/main-moblie.css?v=<?php echo time() ?>">
@@ -42,9 +43,21 @@
                 </div>
             </div>
             <div class="box-icon">
-                <a href="" class="box-search">
-                    <i class="fa-solid fa-magnifying-glass search"></i>
-                </a>
+                <!-- Form search nhe -->
+                <div class="box-search">
+                    <i class="fa-solid fa-magnifying-glass search search-js"></i>
+                    <div class="form" id="form">
+                        <form action="" method="POST">
+                           <div class="searchIn">
+                                <input type="text" name="keyword" class="searchInput-js" placeholder="Tìm kiếm sản phẩm..."  value="<?= isset($_POST['keyword']) ? htmlspecialchars($_POST['keyword'], ENT_QUOTES) : '' ?>" >
+                           </div>
+                           <div class="btn-search">
+                           <button class="btn" type="submit" name="submit">Tìm kiếm</button>
+                           </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- end Form search nhe -->
                 <?php if (isset($_SESSION['user'])) { ?>
                     <?= $_SESSION['user'];  ?>
                     <a class="nav-link" onclick="return confirm('Ban co muon dang xuat?')" href="<?= BASE_URL . '?act=logout' ?>"><i class="fas fa-sign-out-alt"></i></a>
@@ -57,12 +70,28 @@
                 <a href="" class="box-heart">
                     <i class="fa-regular fa-heart heart"></i>
                 </a>
-                <a href="" class="box-cart">
+                <a href="<?= BASE_URL . '?act=gio-hang' ?>" class="box-cart">
                     <i class="fa-solid fa-cart-shopping cart"></i>
                 </a>
             </div>
         </div>
     </div>
+    <!-- Form search nhe -->
+    <?php
+                            $ketQua = $listSanPham;
+                            if(isset($_POST['submit'])) {
+                                $searchInput = trim($_POST['keyword']);
+                                $ketQua = [];
+                                if(!empty($searchInput)) {
+                                    foreach ($listSanPham as $item) {
+                                        if (strpos($item['ten_san_pham'], $searchInput) === 0) {
+                                            $ketQua[] = $item;
+                                        }
+                                    }                
+                                }
+                            }
+                        ?>
+    <!-- Form search nhe -->
     <div class="box-banner-shop">
         <div class="in-box-banner">
             <div class="text-title-banner">
@@ -161,16 +190,51 @@
         </div>
         <div class="box-all-product">
             <div class="header-product">
-
+                <!-- Form search nhe -->
+                <div class="btn-search">
+                    <form action="" method="POST">
+                        <button class="btn btn-outline-warning" type="submit" name="sortOrder" value="A-Z">Sắp xếp A-Z</button>
+                        <button class="btn btn-outline-warning" type="submit" name="sortOrder" value="Z-A">Sắp xếp Z-A</button>
+                    </form>
+                </div>
+                <!-- Form search nhe -->
             </div>
-            
-            <div class="all-box-new-product">
+            <!-- Form search nhe -->
+            <?php
+            $ketQua = $listSanPham;
 
-                <?php foreach ($listSanPham as $key => $sanPham): ?>
+            if (isset($_POST['sortOrder'])) {
+                $sortOrder = $_POST['sortOrder'];
+
+                if ($sortOrder === 'A-Z') {
+                    // Sắp xếp theo tên sản phẩm từ A-Z
+                    usort($ketQua, function ($a, $b) {
+                        return strcmp($a['ten_san_pham'], $b['ten_san_pham']);
+                    });
+                } elseif ($sortOrder === 'Z-A') {
+                    // Sắp xếp theo tên sản phẩm từ Z-A
+                    usort($ketQua, function ($a, $b) {
+                        return strcmp($b['ten_san_pham'], $a['ten_san_pham']);
+                    });
+                }
+            }
+            ?>
+            <!-- Form search nhe -->
+
+            <div class="all-box-new-product">
+                <!-- Thay đổi dư liệu một chút nhé -->
+                <?php foreach ($ketQua as $key => $sanPham): ?>
                     <div class="new-product-1">
                         <div class="pic-product-1">
                             <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
                                 <img id="Pic-product-1" src="<?= BASE_URL . $sanPham['hinh_anh'] ?>" alt="">
+                                <script>
+                                    let newProduct = document.getElementById('Pic-product-1');
+
+                                    newProduct.addEventListener('mouseout', function() {
+                                        newProduct.src = '<?= BASE_URL . $sanPham['hinh_anh'] ?>';
+                                    });
+                                </script>
                             </a>
                             <div class="box-icon-new-product">
                                 <i style="font-size: 19px;" id="cart-Product" class="fa-solid fa-cart-shopping"></i>
@@ -181,7 +245,7 @@
                             </div>
                         </div>
                         <div class="box-star" style="width: 100%; height: 23px;">
-                            <i style="color: #fcad02;" class="fa-solid fa-star"></i>
+                            <i style="color: #fcad02; margin-left: 0;" class="fa-solid fa-star"></i>
                             <i style="color: #fcad02;" class="fa-solid fa-star"></i>
                             <i style="color: #fcad02;" class="fa-solid fa-star"></i>
                             <i style="color: #fcad02;" class="fa-solid fa-star"></i>
@@ -190,18 +254,23 @@
                         </div>
                         <div class="title-new-product">
                             <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
-                                <?= $sanPham['ten_san_pham'] ?></a>
-                        </div>
+                                <!-- Thay đổi dư liệu một chút nhé -->
+                                <?= htmlspecialchars($sanPham['ten_san_pham']) ?></a>
+                            <!-- Thay đổi dư liệu một chút nhé -->
+
+                        </div><br>
                         <div>
-                            <?php if ($sanPham['gia_khuyen_mai'] && $sanPham['gia_khuyen_mai'] > 0): ?>
-                                <span class="price-old"><?= formatPrice($sanPham['gia_san_pham']) . 'đ' ?></span>
+                            <?php if ($sanPham['gia_khuyen_mai'] && $sanPham['gia_khuyen_mai'] > 0) { ?>
+                                <span class="price-old"><?= formatPrice($sanPham['gia_san_pham']) . 'đ'  ?> </span>
                                 <span class="price-new"><?= formatPrice($sanPham['gia_khuyen_mai']) . 'đ' ?></span>
-                            <?php else: ?>
-                                <span class="price-old" style="text-decoration: none; color:red; font-size:larger;"><?= formatPrice($sanPham['gia_san_pham']) . 'đ' ?></span>
-                            <?php endif; ?>
+
+                            <?php } else { ?>
+                                <span class="price-old" style="text-decoration: none; color:red; font-size:larger;"><?= formatPrice($sanPham['gia_san_pham']) . 'đ'  ?></span>
+                            <?php } ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
+
             </div>
 
         </div>

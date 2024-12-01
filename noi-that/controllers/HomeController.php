@@ -4,16 +4,22 @@ class HomeController
 {
     public $modelSanPham;
     public $modelTaiKhoan;
+    public $modelGioHang;
+    public $modelDonHang;
 
     public function __construct()
     {
         $this->modelSanPham = new SanPham();
         $this->modelTaiKhoan = new TaiKhoan();
+        $this->modelGioHang = new GioHang();
+        $this->modelDonHang = new DonHang();
     }
+
     public function about()
     {
         require_once './views/about.php';
     }
+
     public function admin()
     {
         header("Location: " . BASE_URL_ADMIN . '?act=login-admin');
@@ -24,6 +30,7 @@ class HomeController
         $topSanPham = $this->modelSanPham->getTop3SanPham(); // Lấy top 3 sản phẩm
         require_once './views/home.php';
     }
+
     public function shop()
     {
         $listSanPham = $this->modelSanPham->getAllSanPham();
@@ -40,7 +47,7 @@ class HomeController
         $sanPham = $this->modelSanPham->getOneSanPham($id);
         $listAnhSanPham = $this->modelSanPham->getListAnhSanPham($id);
         $listBinhLuan = $this->modelSanPham->getBLFormSanPham($id);
-        $listSanPhamCungDanhMuc = $this->modelSanPham->getListSanPhamCungDanhMuc($sanPham['danh_muc_id']);
+        $listSanPhamCungDanhMuc = $this->modelSanPham->getSanPhamTheoDanhMuc($sanPham['danh_muc_id']);
         if ($sanPham) {
             require_once './views/chiTietSanPham.php';
         } else {
@@ -49,11 +56,9 @@ class HomeController
         }
     }
 
-
     public function formLogin()
     {
         require_once './views/login.php';
-
         deleteSessionError();
     }
 
@@ -63,19 +68,15 @@ class HomeController
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-
             $user = $this->modelTaiKhoan->checklogin($email, $password);
-            if ($user == $email) { //dang nhap thanh cong
-
-                $oneuser = $this->modelTaiKhoan->getOneUser($email);
-                $_SESSION['user'] = $oneuser['ho_ten'];
-                header(header: "Location: " . BASE_URL);
+            if ($user == $email) { // Đăng nhập thành công
+                $_SESSION['user'] = $email;  // Lưu email vào session
+                header("Location: " . BASE_URL);
                 exit();
             } else {
-                $_SESSION['error'] = $user;
+                $_SESSION['error'] = 'Email hoặc mật khẩu không đúng!';
                 $_SESSION['flash'] = true;
-
-                header(header: "Location: " . BASE_URL . '?act=login');
+                header("Location: " . BASE_URL . '?act=login');
                 exit();
             }
         }
@@ -89,13 +90,12 @@ class HomeController
         }
     }
 
-
     public function formSignUp()
     {
         require_once './views/signUp.php';
-
         deleteSessionError();
     }
+
     public function postSignUp()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -153,17 +153,184 @@ class HomeController
             }
         }
     }
+
+    public function gioHang()
+    {
+        $email = $_SESSION['user'];
+        $user = $this->modelTaiKhoan->getOneUser($email);
+
+        // Kiểm tra xem người dùng có tồn tại trong hệ thống không
+        if ($user && isset($user['id'])) {
+            $tai_khoan_id = $user['id']; // Gán tai_khoan_id từ người dùng đã đăng nhập
+
+            // Kiểm tra xem người dùng đã có giỏ hàng chưa
+            $gioHang = $this->modelGioHang->getGioHangFromId(id: $tai_khoan_id);
+
+            // Nếu chưa có giỏ hàng, tạo giỏ hàng mới
+            if (!$gioHang) {
+                $gioHangId = $this->modelGioHang->addGioHang($tai_khoan_id);
+                $gioHang = ['id' => $gioHangId]; // Lưu lại ID giỏ hàng mới tạo
+            } else {
+                $gioHangId = $gioHang['id']; // Giỏ hàng đã tồn tại
+            }
+
+
+
+            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+            $checkSanPham = false;
+            $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHangId);
+
+            // var_dump($chiTietGioHang);die;
+            // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào chi tiết giỏ hàng
+
+            // Xác nhận thêm giỏ hàng thành công
+            require_once 'views/cart.php';
+        } else {
+            // Người dùng không tồn tại trong hệ thống
+            var_dump('Người dùng không tồn tại!');
+            die();
+        }
+    }
+
     public function sanPhamTheoDanhMuc()
     {
         $idDanhMuc = $_GET['id'] ?? null;
         if ($idDanhMuc) {
             $listSanPham = $this->modelSanPham->getSanPhamTheoDanhMuc($idDanhMuc);
             $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
-            require_once './views/Shop.php';
+            require_once './views/Shop.php'; // Gọi view tương ứng
         } else {
             $listSanPham = $this->modelSanPham->getAllSanPham();
             $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
             require_once './views/Shop.php';
+            exit();
+        }
+    }
+
+    public function addGioHang()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Kiểm tra xem người dùng đã đăng nhập chưa
+            if (isset($_SESSION['user'])) {
+                // Lấy thông tin người dùng từ session
+                $email = $_SESSION['user'];
+                $user = $this->modelTaiKhoan->getOneUser($email);
+
+                // Kiểm tra xem người dùng có tồn tại trong hệ thống không
+                if ($user && isset($user['id'])) {
+                    $tai_khoan_id = $user['id']; // Gán tai_khoan_id từ người dùng đã đăng nhập
+
+                    // Kiểm tra xem người dùng đã có giỏ hàng chưa
+                    $gioHang = $this->modelGioHang->getGioHangFromId(id: $tai_khoan_id);
+
+                    // Nếu chưa có giỏ hàng, tạo giỏ hàng mới
+                    if (!$gioHang) {
+                        $gioHangId = $this->modelGioHang->addGioHang($tai_khoan_id);
+                        $gioHang = ['id' => $gioHangId]; // Lưu lại ID giỏ hàng mới tạo
+                    } else {
+                        $gioHangId = $gioHang['id']; // Giỏ hàng đã tồn tại
+                    }
+
+                    // Lấy thông tin sản phẩm và số lượng từ form
+                    $san_pham_id = $_POST['san_pham_id'];
+                    $so_luong = $_POST['so_luong'];
+
+                    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+                    $checkSanPham = false;
+                    $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHangId);
+
+                    // var_dump($chiTietGioHang);die;
+                    // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào chi tiết giỏ hàng
+                    if (!$checkSanPham) {
+                        $this->modelGioHang->addDetailGioHang($gioHangId, $san_pham_id, $so_luong);
+                    }
+
+                    // Xác nhận thêm giỏ hàng thành công
+                    require_once 'views/cart.php';
+                } else {
+                    // Người dùng không tồn tại trong hệ thống
+                    var_dump('Người dùng không tồn tại!');
+                    die();
+                }
+            } else {
+                // Người dùng chưa đăng nhập
+                var_dump('Chưa đăng nhập!');
+                die();
+            }
+        }
+    }
+
+    public function thanhToan()
+    {
+        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+        if (!isset($_SESSION['user'])) {
+            echo 'Chưa đăng nhập!';
+            die();
+        }
+
+        // Lấy thông tin người dùng từ session
+        $email = $_SESSION['user'];
+        $user = $this->modelTaiKhoan->getOneUser($email);
+
+        // Kiểm tra xem người dùng có tồn tại không
+        if (!$user || !isset($user['id'])) {
+            echo 'Người dùng không tồn tại!';
+            die();
+        }
+
+        // Lấy ID tài khoản của người dùng
+        $tai_khoan_id = $user['id'];
+
+        // Lấy giỏ hàng hiện tại
+        $gioHang = $this->modelGioHang->getGioHangFromId($tai_khoan_id);
+
+        if (!$gioHang) {
+            // Nếu chưa có giỏ hàng, tạo mới giỏ hàng
+            $gioHangId = $this->modelGioHang->addGioHang($tai_khoan_id);
+            $gioHang = ['id' => $gioHangId];
+        }
+
+        // Lấy chi tiết giỏ hàng (danh sách sản phẩm trong giỏ hàng)
+        $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHang['id']);
+
+        // Truyền dữ liệu giỏ hàng vào view
+        require_once 'views/pay.php';
+    }
+
+    public function postthanhToan()
+    {
+        if ($_SERVER['REQUEST_METHOD'] ==  'POST') {
+
+            $ten_nguoi_nhan = $_POST['ten_nguoi_nhan'];
+            $email_nguoi_nhan = $_POST['email_nguoi_nhan'];
+            $sdt_nguoi_nhan = $_POST['sdt_nguoi_nhan'];
+            $dia_chi_nguoi_nhan = $_POST['dia_chi_nguoi_nhan'];
+            $ghi_chu = $_POST['ghi_chu'];
+            $tong_tien = $_POST['tong_tien'];
+            $phuong_thuc_thanh_toan_id = $_POST['phuong_thuc_thanh_toan_id'];
+
+
+
+            $ngay_dat = date('Y-m-d');
+
+            $trang_thai_id = 1;
+            $user = $this->modelTaiKhoan->getOneUser($_SESSION['user']);
+            $tai_khoan_id =   $user['id'];
+            $ma_don_hang = 'DH' . rand(1000, 9999);
+            $this->modelDonHang->addDonHang(
+                $tai_khoan_id,
+                $ten_nguoi_nhan,
+                $email_nguoi_nhan,
+                $sdt_nguoi_nhan,
+                $dia_chi_nguoi_nhan,
+                $ghi_chu,
+                $tong_tien,
+                $phuong_thuc_thanh_toan_id,
+                $ngay_dat,
+                $ma_don_hang,
+                $trang_thai_id
+            );
+            header('Location:' . BASE_URL . '?act=shop');
             exit();
         }
     }
