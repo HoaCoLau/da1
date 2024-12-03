@@ -12,7 +12,33 @@ html {
     --color-text: #585858;
     --Hover-icon: #FF9B42;
 }
+.pagination {
+    display: flex;
+    justify-content: center; /* Căn giữa */
+    margin: 20px 0; /* Khoảng cách trên và dưới */
+}
 
+.pagination a {
+    display: inline-block;
+    padding: 10px 15px; /* Khoảng cách bên trong */
+    margin: 0 5px; /* Khoảng cách giữa các nút */
+    background-color: #f0f0f0; /* Màu nền cho nút */
+    color: #333; /* Màu chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    border-radius: 5px; /* Bo góc */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+}
+
+.pagination a:hover {
+    background-color: #FF9B42; /* Màu nền khi hover */
+    color: white; /* Màu chữ khi hover */
+}
+
+.pagination .active {
+    background-color: #FF9B42; /* Màu nền cho nút đang hoạt động */
+    color: white; /* Màu chữ cho nút đang hoạt động */
+    pointer-events: none; /* Ngăn không cho nhấp vào nút đang hoạt động */
+}
 /* Phần hearder  */
 .header {
     width: 100%;

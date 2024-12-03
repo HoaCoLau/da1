@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
     <link rel="stylesheet" href="./Css/about.css?v=<?php echo time()?>">
     <link rel="stylesheet" href="./Css/main.css?v=<?php echo time()?>">
@@ -42,8 +44,9 @@
                 <a href="" class="box-search">
                     <i class="fa-solid fa-magnifying-glass search"></i>
                 </a>
+                <a href=""></a>
                 <?php if (isset($_SESSION['user'])) { ?>
-                    <?= $_SESSION['user'];  ?>
+                    <?= $_SESSION['user_name'];  ?>
                     <a class="nav-link" onclick="return confirm('Ban co muon dang xuat?')" href="<?= BASE_URL . '?act=logout' ?>"><i class="fas fa-sign-out-alt"></i></a>
                 <?php } else { ?>
 
@@ -51,9 +54,7 @@
                         <i class="fa-regular fa-user user"></i>
                     </a>
                 <?php } ?>
-                <a href="" class="box-heart">
-                    <i class="fa-regular fa-heart heart"></i>
-                </a>
+                
                 <a href="" class="box-cart">
                     <i class="fa-solid fa-cart-shopping cart"></i>
                 </a>

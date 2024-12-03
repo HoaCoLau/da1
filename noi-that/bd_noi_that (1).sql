@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 01, 2024 at 06:20 PM
+-- Generation Time: Dec 03, 2024 at 05:34 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -97,7 +97,13 @@ INSERT INTO `chi_tiet_gio_hangs` (`id`, `gio_hang_id`, `san_pham_id`, `so_luong`
 (7, 2, 15, 1),
 (8, 2, 15, 2),
 (9, 2, 19, 2),
-(10, 2, 23, 2);
+(10, 2, 23, 2),
+(11, 3, 14, 4),
+(12, 3, 14, 1),
+(13, 3, 15, 1),
+(14, 3, 15, 1),
+(15, 4, 14, 1),
+(16, 4, 14, 1);
 
 -- --------------------------------------------------------
 
@@ -162,8 +168,6 @@ CREATE TABLE `don_hangs` (
 --
 
 INSERT INTO `don_hangs` (`id`, `ma_don_hang`, `tai_khoan_id`, `ten_nguoi_nhan`, `email_nguoi_nhan`, `sdt_nguoi_nhan`, `dia_chi_nguoi_nhan`, `ngay_dat`, `tong_tien`, `ghi_chu`, `phuong_thuc_thanh_toan_id`, `trang_thai_id`) VALUES
-(1, 'DH-123', 1, 'Thuận', 't@gmail.com', '0373607863', 'Hà Nội', '2024-08-01', '900000.00', 'hehe', 1, 2),
-(2, 'DH-125', 1, 'Thuận', 't@gmail.com', '0373607863', 'Hà Nội', '2024-08-02', '1900000.00', 'gege', 2, 1),
 (3, 'DH3334', 15, 'NGUYEN TIEN THUAN', 'c@gmail.com', '56345353', 'Thôn 1, Yên Sở, Hoài Đức, Hà Nội\r\nThôn 1, Yên Sở, Hoài Đức, Hà Nội', '2024-12-01', '1760000.00', 'dâdw', 1, 1),
 (4, 'DH9763', 15, 'NGUYEN TIEN THUAN', 'c@gmail.com', '56345353', 'Thôn 1, Yên Sở, Hoài Đức, Hà Nội\r\nThôn 1, Yên Sở, Hoài Đức, Hà Nội', '2024-12-01', '1760000.00', 'dâdw', 1, 1),
 (5, 'DH8131', 15, 'NGUYEN TIEN THUAN', 'c@gmail.com', '56345353', 'Thôn 1, Yên Sở, Hoài Đức, Hà Nội\r\nThôn 1, Yên Sở, Hoài Đức, Hà Nội', '2024-12-01', '1760000.00', 'dâdw', 1, 1),
@@ -172,7 +176,11 @@ INSERT INTO `don_hangs` (`id`, `ma_don_hang`, `tai_khoan_id`, `ten_nguoi_nhan`, 
 (8, 'DH6550', 15, 'NGUYEN TIEN THUAN', 'c@gmail.com', '56345353', 'Thôn 1, Yên Sở, Hoài Đức, Hà Nội\r\nThôn 1, Yên Sở, Hoài Đức, Hà Nội', '2024-12-01', '12600000.00', '3rfada', 1, 1),
 (9, 'DH3622', 15, 'NGUYEN TIEN THUAN', 'c@gmail.com', '56345353', 'Thôn 1, Yên Sở, Hoài Đức, Hà Nội\r\nThôn 1, Yên Sở, Hoài Đức, Hà Nội', '2024-12-01', '13800000.00', 'twehe5y4gr', 1, 1),
 (10, 'DH9492', 15, 'Trang', 'c@gmail.com', '56345353', 'adadadw', '2024-12-01', '16200000.00', '34242', 1, 1),
-(11, 'DH8165', 15, 'Trang', 'c@gmail.com', '56345353', 'dadada', '2024-12-01', '19800000.00', 'dadadad', 1, 1);
+(11, 'DH8165', 15, 'Trang', 'c@gmail.com', '56345353', 'dadada', '2024-12-01', '19800000.00', 'dadadad', 1, 1),
+(12, 'DH2988', 16, 'NGUYEN TIEN THUAN', 'y@gmail.com', '56345353', 'Thôn 1, Yên Sở, Hoài Đức, Hà Nội\r\nThôn 1, Yên Sở, Hoài Đức, Hà Nội', '2024-12-02', '1760000.00', 'gsfs', 1, 1),
+(13, 'DH7966', 16, 'adada', 'y@gmail.com', '56345353', 'dâdada', '2024-12-03', '4600000.00', 'adada', 1, 1),
+(14, 'DH6691', 16, 'adada', 'y@gmail.com', '56345353', 'dâda', '2024-12-03', '4600000.00', 'adada', 1, 1),
+(15, 'DH4817', 16, 'adada', 'y@gmail.com', '56345353', 'dadad', '2024-12-03', '880000.00', 'dada', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -191,7 +199,8 @@ CREATE TABLE `gio_hangs` (
 
 INSERT INTO `gio_hangs` (`id`, `tai_khoan_id`) VALUES
 (1, 14),
-(2, 15);
+(2, 15),
+(5, 16);
 
 -- --------------------------------------------------------
 
@@ -292,18 +301,31 @@ CREATE TABLE `san_phams` (
 --
 
 INSERT INTO `san_phams` (`id`, `ten_san_pham`, `gia_san_pham`, `gia_khuyen_mai`, `hinh_anh`, `so_luong`, `luot_xem`, `ngay_nhap`, `mo_ta`, `danh_muc_id`, `trang_thai`) VALUES
-(14, 'GHẾ EAMES NHỰA MẶT ĐỆM CHÂN SẮT SƠN TĨNH ĐIỆN', '550000.00', '440000.00', './uploads/1723371324img-16-600x600.jpg', 45, 0, '2024-07-15', 'Siêu bền', 16, 1),
-(15, 'Ghế sofa', '2000000.00', '1200000.00', './uploads/17233714701722685109slider-4.jpg', 56, 0, '2024-07-29', 'Siêu đẹp', 18, 1),
-(16, 'ghế mát xa', '12000000.00', '8000000.00', './uploads/17233715891723371470slider-6.jpg', 14, 0, '2024-07-29', 'Siêu bền', 16, 1),
-(17, 'ghế mát xa [New]', '21000000.00', '15000000.00', './uploads/1723371649banner-6-1.jpg', 36, 0, '2024-08-06', 'Siêu êm', 16, 1),
-(18, 'Ghế sofa [New]', '5000000.00', '2000000.00', './uploads/172337171817233715891722685109slider-5.jpg', 25, 0, '2024-07-30', 'Siêu êm', 18, 1),
-(19, 'Bàn phòng khách', '3000000.00', '1800000.00', './uploads/17326402841722685109slider-6.jpg', 252, 0, '2024-07-30', 'Siêu đẹp', 19, 1),
-(20, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/17326403101722698488banner-6-1.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
-(21, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/17326678661722706074img-15-9-600x600.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
-(22, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/1732667880products-2-600x600.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
-(23, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/17326679441722684567categories-10.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
-(24, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/17326678531722685109categories-6.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
-(25, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/17326679001722684733img-15-9-600x600.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
+(1, 'Bàn làm việc A', '100.00', '90.00', 'ban_lam_viec_A.jpg', 10, 0, '2023-10-01', 'Bàn làm việc chất lượng cao', 15, 1),
+(2, 'Bàn làm việc B', '150.00', '135.00', 'ban_lam_viec_B.jpg', 15, 0, '2023-10-01', 'Bàn làm việc hiện đại', 15, 1),
+(3, 'Ghế A', '50.00', '45.00', 'ghe_A.jpg', 20, 0, '2023-10-01', 'Ghế ngồi thoải mái', 16, 1),
+(4, 'Ghế B', '60.00', '54.00', 'ghe_B.jpg', 25, 0, '2023-10-01', 'Ghế văn phòng', 16, 1),
+(5, 'Kệ để đồ A', '80.00', '72.00', 'ke_A.jpg', 30, 0, '2023-10-01', 'Kệ để đồ tiện dụng', 17, 1),
+(6, 'Kệ để đồ B', '90.00', '81.00', 'ke_B.jpg', 35, 0, '2023-10-01', 'Kệ để đồ đa năng', 17, 1),
+(7, 'Ghế sofa A', '200.00', '180.00', 'ghe_sofa_A.jpg', 5, 0, '2023-10-01', 'Ghế sofa êm ái', 18, 1),
+(8, 'Ghế sofa B', '250.00', '225.00', 'ghe_sofa_B.jpg', 8, 0, '2023-10-01', 'Ghế sofa sang trọng', 18, 1),
+(9, 'Bàn A', '120.00', '108.00', 'ban_an_A.jpg', 12, 0, '2023-10-01', 'Bàn ăn gia đình', 19, 1),
+(10, 'Bàn B', '130.00', '117.00', 'ban_hoc_B.jpg', 14, 0, '2023-10-01', 'Bàn học sinh', 19, 1),
+(11, 'Tủ A', '300.00', '270.00', 'tu_A.jpg', 6, 0, '2023-10-01', 'Tủ quần áo', 20, 1),
+(12, 'Tủ B', '350.00', '315.00', 'tu_B.jpg', 7, 0, '2023-10-01', 'Tủ bếp', 20, 1),
+(13, 'Đèn A', '40.00', '36.00', 'den_ban_A.jpg', 50, 0, '2023-10-01', 'Đèn bàn', 21, 1),
+(14, 'Đèn B', '45.00', '40.50', 'den_ngu_B.jpg', 55, 0, '2023-10-01', 'Đèn ngủ', 21, 1),
+(15, 'Bồn tắm A', '500.00', '450.00', 'bon_tam_A.jpg', 3, 0, '2023-10-01', 'Bồn tắm hiện đại', 22, 1),
+(16, 'Bồn tắm B', '550.00', '495.00', 'bon_tam_B.jpg', 4, 0, '2023-10-01', 'Bồn tắm sang trọng', 22, 1),
+(17, 'Bàn làm việc C', '110.00', '99.00', 'ban_lam_viec_C.jpg', 10, 0, '2023-10-01', 'Bàn làm việc phong cách', 15, 1),
+(18, 'Ghế C', '55.00', '49.50', 'ghe_C.jpg', 20, 0, '2023-10-01', 'Ghế ngồi thoải mái', 16, 1),
+(19, 'Kệ để đồ C', '85.00', '76.50', 'ke_C.jpg', 30, 0, '2023-10-01', 'Kệ để đồ tiện dụng', 17, 1),
+(20, 'Ghế sofa C', '210.00', '189.00', 'ghe_sofa_C.jpg', 5, 0, '2023-10-01', 'Ghế sofa êm ái', 18, 1),
+(21, 'Bàn C', '125.00', '112.50', 'ban_an_C.jpg', 12, 0, '2023-10-01', 'Bàn ăn gia đình', 19, 1),
+(22, 'Tủ C', '310.00', '279.00', 'tu_C.jpg', 6, 0, '2023-10-01', 'Tủ quần áo', 20, 1),
+(23, 'Đèn C', '42.00', '37.80', 'den_ban_C.jpg', 50, 0, '2023-10-01', 'Đèn bàn', 21, 1),
+(24, 'Bồn tắm C', '520.00', '468.00', 'bon_tam_C.jpg', 3, 0, '2023-10-01', 'Bồn tắm hiện đại', 22, 1),
+(25, 'Bàn làm việc D', '115.00', '103.50', 'ban_lam_viec_D.jpg', 10, 0, '2023-10-01', 'Bàn làm việc phong cách', 15, 1),
 (26, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/17326679871722685109slider-4.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
 (27, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/17326679161722680885slider-4.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
 (28, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/1732668526ketchen-room.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
@@ -326,7 +348,8 @@ INSERT INTO `san_phams` (`id`, `ten_san_pham`, `gia_san_pham`, `gia_khuyen_mai`,
 (45, 'Tủ đựng đồ', '5000000.00', '2400000.00', './uploads/17326680701722684567categories-10.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
 (46, 'ghế ngồi', '5000000.00', '2400000.00', './uploads/17326681791722684868img-15-9-600x600.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
 (47, 'ghế ngồi', '5000000.00', '2400000.00', './uploads/17326682061722685262img-1.png', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
-(48, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/1723372066products-10-5-600x600.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1);
+(48, 'bàn làm việc', '5000000.00', '2400000.00', './uploads/1723372066products-10-5-600x600.jpg', 23, 0, '2024-05-06', 'Siêu đẹp', 19, 1),
+(50, 'Ghế G', '64.00', '57.60', 'ghe_G.jpg', 20, 0, '2023-10-01', 'Ghế ngồi thoải mái', 16, 1);
 
 -- --------------------------------------------------------
 
@@ -355,7 +378,8 @@ CREATE TABLE `tai_khoans` (
 INSERT INTO `tai_khoans` (`id`, `ho_ten`, `anh_dai_dien`, `ngay_sinh`, `email`, `so_dien_thoai`, `gioi_tinh`, `dia_chi`, `mat_khau`, `chuc_vu_id`, `trang_thai`) VALUES
 (11, 'Thuan', NULL, NULL, 'b@gmail.com', '56345353', 1, NULL, '$2y$10$YqHT1Jia4TnKcaYyNXRLmOy2Tvdwugr9rzRGwtkc.M1smLSJQjnO.', 1, 1),
 (14, 'adada', NULL, NULL, 'kmisme07@gmail.com', '56345353', 1, NULL, '$2y$10$p21UpMUTx2X/NsTJCTd1TOUsNgWFGb3DHHjd3bcksdTWmz1Wv1qoO', 2, 1),
-(15, 'Trang', NULL, NULL, 'c@gmail.com', '56345353', 1, NULL, '$2y$10$z7GkLdMSqbeUmRREfCE/Pe/NC5/1lNpamhs/MA/.w/9lf/UMjnWvG', 2, 1);
+(15, 'Trang', NULL, NULL, 'c@gmail.com', '56345353', 1, NULL, '$2y$10$z7GkLdMSqbeUmRREfCE/Pe/NC5/1lNpamhs/MA/.w/9lf/UMjnWvG', 2, 1),
+(16, 'adada', NULL, NULL, 'y@gmail.com', '56345353', 1, NULL, '$2y$10$Bt2Qh/pLOHn2aXHFwZ8OxubrmJUt1l9VXS5txiYz4f.Ba7FYp.BxG', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -482,7 +506,7 @@ ALTER TABLE `chi_tiet_don_hangs`
 -- AUTO_INCREMENT for table `chi_tiet_gio_hangs`
 --
 ALTER TABLE `chi_tiet_gio_hangs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `chuc_vus`
@@ -500,13 +524,13 @@ ALTER TABLE `danh_mucs`
 -- AUTO_INCREMENT for table `don_hangs`
 --
 ALTER TABLE `don_hangs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `gio_hangs`
 --
 ALTER TABLE `gio_hangs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `hinh_anh_san_phams`
@@ -524,13 +548,13 @@ ALTER TABLE `phuong_thuc_thanh_toans`
 -- AUTO_INCREMENT for table `san_phams`
 --
 ALTER TABLE `san_phams`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `tai_khoans`
 --
 ALTER TABLE `tai_khoans`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `trang_thai_don_hangs`

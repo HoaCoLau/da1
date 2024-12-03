@@ -35,4 +35,15 @@ class DonHang
             return false;
         }
     }
+    public function clearGioHang($tai_khoan_id) {
+        try {
+            $sql = 'DELETE FROM gio_hangs WHERE tai_khoan_id = :tai_khoan_id';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':tai_khoan_id' => $tai_khoan_id]);
+            return true;
+        } catch (Exception $e) {
+            echo 'Lỗi: ' . $e->getMessage();
+            return false;
+        }
+    }
 }

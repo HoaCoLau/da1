@@ -20,6 +20,7 @@ class AdminDonHangControllers
         //lay thong tin don hang o bang don hang
         $donHang = $this->modelDonHang->getDetailDonHang($don_hang_id);
 
+
         //lay danh sach sp da dat cua don hang
         $sanPhamDonHang = $this->modelDonHang->getListSPDonHang($don_hang_id);
         

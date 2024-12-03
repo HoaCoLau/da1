@@ -24,6 +24,44 @@ class SanPham
             echo 'loi' . $e->getMessage();
         }
     }
+    public function getSanPhamPhanTrang($limit, $offset)
+    {
+        try {
+            $sql = 'SELECT san_phams.*, danh_mucs.ten_danh_muc
+                FROM san_phams
+                INNER JOIN danh_mucs ON san_phams.danh_muc_id = danh_mucs.id
+                LIMIT :limit OFFSET :offset';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            echo 'Lỗi: ' . $e->getMessage();
+        }
+    }
+    public function countSanPhamTheoDanhMuc($idDanhMuc)
+{
+    try {
+        $sql = 'SELECT COUNT(*) as total FROM san_phams WHERE danh_muc_id = :idDanhMuc';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':idDanhMuc' => $idDanhMuc]);
+        return $stmt->fetchColumn(); // Trả về số lượng sản phẩm
+    } catch (Exception $e) {
+        echo 'Lỗi: ' . $e->getMessage();
+    }
+}
+    public function countAllSanPham()
+    {
+        try {
+            $sql = 'SELECT COUNT(*) as total FROM san_phams';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        } catch (Exception $e) {
+            echo 'Lỗi: ' . $e->getMessage();
+        }
+    }
     public function getAllDanhMuc()
     {
         try {

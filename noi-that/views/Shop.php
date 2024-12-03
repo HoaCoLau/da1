@@ -48,18 +48,19 @@
                     <i class="fa-solid fa-magnifying-glass search search-js"></i>
                     <div class="form" id="form">
                         <form action="" method="POST">
-                           <div class="searchIn">
-                                <input type="text" name="keyword" class="searchInput-js" placeholder="Tìm kiếm sản phẩm..."  value="<?= isset($_POST['keyword']) ? htmlspecialchars($_POST['keyword'], ENT_QUOTES) : '' ?>" >
-                           </div>
-                           <div class="btn-search">
-                           <button class="btn" type="submit" name="submit">Tìm kiếm</button>
-                           </div>
+                            <div class="searchIn">
+                                <input type="text" name="keyword" class="searchInput-js" placeholder="Tìm kiếm sản phẩm..." value="<?= isset($_POST['keyword']) ? htmlspecialchars($_POST['keyword'], ENT_QUOTES) : '' ?>">
+                            </div>
+                            <div class="btn-search">
+                                <button class="btn" type="submit" name="submit">Tìm kiếm</button>
+                            </div>
                         </form>
                     </div>
                 </div>
+                <a href=""></a>
                 <!-- end Form search nhe -->
                 <?php if (isset($_SESSION['user'])) { ?>
-                    <?= $_SESSION['user'];  ?>
+                    <?= $_SESSION['user_name'];  ?>
                     <a class="nav-link" onclick="return confirm('Ban co muon dang xuat?')" href="<?= BASE_URL . '?act=logout' ?>"><i class="fas fa-sign-out-alt"></i></a>
                 <?php } else { ?>
 
@@ -67,9 +68,7 @@
                         <i class="fa-regular fa-user user"></i>
                     </a>
                 <?php } ?>
-                <a href="" class="box-heart">
-                    <i class="fa-regular fa-heart heart"></i>
-                </a>
+
                 <a href="<?= BASE_URL . '?act=gio-hang' ?>" class="box-cart">
                     <i class="fa-solid fa-cart-shopping cart"></i>
                 </a>
@@ -78,19 +77,19 @@
     </div>
     <!-- Form search nhe -->
     <?php
-                            $ketQua = $listSanPham;
-                            if(isset($_POST['submit'])) {
-                                $searchInput = trim($_POST['keyword']);
-                                $ketQua = [];
-                                if(!empty($searchInput)) {
-                                    foreach ($listSanPham as $item) {
-                                        if (strpos($item['ten_san_pham'], $searchInput) === 0) {
-                                            $ketQua[] = $item;
-                                        }
-                                    }                
-                                }
-                            }
-                        ?>
+    $ketQua = $listSanPham;
+    if (isset($_POST['submit'])) {
+        $searchInput = trim($_POST['keyword']);
+        $ketQua = [];
+        if (!empty($searchInput)) {
+            foreach ($listSanPham as $item) {
+                if (strpos($item['ten_san_pham'], $searchInput) === 0) {
+                    $ketQua[] = $item;
+                }
+            }
+        }
+    }
+    ?>
     <!-- Form search nhe -->
     <div class="box-banner-shop">
         <div class="in-box-banner">
@@ -110,16 +109,16 @@
             </div>
             <div class="box-list-product">
                 <div class="box-shop-product">
-                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16'?>">
+                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16' ?>">
                         <img src="./uploads/Shop/categories-19.jpg" alt="">
                         <div class="name-product">
-                        
+
                             <p>Armchairs</p>
                         </div>
                     </a>
                 </div>
                 <div class="box-shop-product">
-                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16'?>">
+                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16' ?>">
                         <img src="./uploads/Shop/categories-18.jpg" alt="">
                         <div class="name-product">
                             <p>Outdoor</p>
@@ -127,7 +126,7 @@
                     </a>
                 </div>
                 <div class="box-shop-product">
-                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16'?>">
+                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16' ?>">
                         <img src="./uploads/Shop/categories-6.jpg" alt="">
                         <div class="name-product">
                             <p>Sofas</p>
@@ -135,7 +134,7 @@
                     </a>
                 </div>
                 <div class="box-shop-product">
-                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16'?>">
+                    <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=16' ?>">
                         <img src="./uploads/Shop/categories-10.jpg" alt="">
                         <div class="name-product">
                             <p>Storage</p>
@@ -147,20 +146,20 @@
     </div>
     <div class="box-shop">
         <div class="box-sidebar">
-                <div class="first-sidebar">
-                    <div class="title-sidebar">
-                        Categories
-                    </div>
-                    <?php foreach ($listDanhMuc as $key => $danhMuc): ?>
-                        <div class="in-sidebar">
-                            <div class="name">
-                                <!-- Cập nhật liên kết đến trang lọc sản phẩm -->
-                                <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=' . $danhMuc['id'] ?>"><?= $danhMuc['ten_danh_muc'] ?></a>
-                            </div>
-                            <div class="box-number"></div>
-                        </div>
-                    <?php endforeach; ?>
+            <div class="first-sidebar">
+                <div class="title-sidebar">
+                    Categories
                 </div>
+                <?php foreach ($listDanhMuc as $key => $danhMuc): ?>
+                    <div class="in-sidebar">
+                        <div class="name">
+                            <!-- Cập nhật liên kết đến trang lọc sản phẩm -->
+                            <a href="<?= BASE_URL . '?act=san-pham-theo-danh-muc&id=' . $danhMuc['id'] ?>"><?= $danhMuc['ten_danh_muc'] ?></a>
+                        </div>
+                        <div class="box-number"></div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
 
             <div class="all-box-brands">
                 <div class="title-brands">Brands</div>
@@ -238,7 +237,6 @@
                             </a>
                             <div class="box-icon-new-product">
                                 <i style="font-size: 19px;" id="cart-Product" class="fa-solid fa-cart-shopping"></i>
-                                <i style="font-size: 18px;" id="heart-Product" class="fa-solid fa-heart"></i>
                                 <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
                                     <i style="font-size: 18px;" id="search-Product" class="fa-solid fa-magnifying-glass"></i>
                                 </a>
@@ -271,6 +269,11 @@
                     </div>
                 <?php endforeach; ?>
 
+            </div>
+            <div class="pagination">
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <a href="?act=shop&page=<?= $i ?>" class="<?= $i == $currentPage ? 'active' : '' ?>"><?= $i ?></a>
+                <?php endfor; ?>
             </div>
 
         </div>

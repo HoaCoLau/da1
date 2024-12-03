@@ -32,14 +32,49 @@ class HomeController
     }
 
     public function shop()
-    {
-        $listSanPham = $this->modelSanPham->getAllSanPham();
+{
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $itemsPerPage = 16; 
+    $offset = ($currentPage - 1) * $itemsPerPage; 
+
+    $listSanPham = $this->modelSanPham->getSanPhamPhanTrang($itemsPerPage, $offset);
+    $totalSanPham = $this->modelSanPham->countAllSanPham(); 
+    $totalPages = ceil($totalSanPham / $itemsPerPage); 
+
+    $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
+    foreach ($listSanPham as &$sanPham) {
+        $sanPham['hinh_anh_khac'] = $this->modelSanPham->getListHinhAnhSanPham($sanPham['id']);
+    }
+    require_once './views/Shop.php';
+}
+public function sanPhamTheoDanhMuc()
+{
+    $idDanhMuc = $_GET['id'] ?? null;
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $itemsPerPage = 16; 
+    $offset = ($currentPage - 1) * $itemsPerPage; 
+
+    if ($idDanhMuc) {
+        // Lấy sản phẩm theo danh mục với phân trang
+        $listSanPham = $this->modelSanPham->getSanPhamTheoDanhMuc($idDanhMuc, $itemsPerPage, $offset);
+        $totalSanPham = $this->modelSanPham->countSanPhamTheoDanhMuc($idDanhMuc); // Giả sử bạn có phương thức này để đếm sản phẩm theo danh mục
+        $totalPages = ceil($totalSanPham / $itemsPerPage); 
+
         $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
         foreach ($listSanPham as &$sanPham) {
             $sanPham['hinh_anh_khac'] = $this->modelSanPham->getListHinhAnhSanPham($sanPham['id']);
         }
+        
+        require_once './views/Shop.php'; // Gọi view tương ứng
+    } else {
+        // Nếu không có danh mục, lấy tất cả sản phẩm
+        $listSanPham = $this->modelSanPham->getAllSanPham();
+        $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
         require_once './views/Shop.php';
+        exit();
     }
+}
+
 
     public function chiTietSanPham()
     {
@@ -70,6 +105,8 @@ class HomeController
 
             $user = $this->modelTaiKhoan->checklogin($email, $password);
             if ($user == $email) { // Đăng nhập thành công
+                $oneuser = $this->modelTaiKhoan->getOneUser($email);
+                $_SESSION['user_name'] = $oneuser['ho_ten'];
                 $_SESSION['user'] = $email;  // Lưu email vào session
                 header("Location: " . BASE_URL);
                 exit();
@@ -158,7 +195,6 @@ class HomeController
     {
         $email = $_SESSION['user'];
         $user = $this->modelTaiKhoan->getOneUser($email);
-
         // Kiểm tra xem người dùng có tồn tại trong hệ thống không
         if ($user && isset($user['id'])) {
             $tai_khoan_id = $user['id']; // Gán tai_khoan_id từ người dùng đã đăng nhập
@@ -192,21 +228,7 @@ class HomeController
         }
     }
 
-    public function sanPhamTheoDanhMuc()
-    {
-        $idDanhMuc = $_GET['id'] ?? null;
-        if ($idDanhMuc) {
-            $listSanPham = $this->modelSanPham->getSanPhamTheoDanhMuc($idDanhMuc);
-            $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
-            require_once './views/Shop.php'; // Gọi view tương ứng
-        } else {
-            $listSanPham = $this->modelSanPham->getAllSanPham();
-            $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
-            require_once './views/Shop.php';
-            exit();
-        }
-    }
-
+    
     public function addGioHang()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -300,7 +322,7 @@ class HomeController
     public function postthanhToan()
     {
         if ($_SERVER['REQUEST_METHOD'] ==  'POST') {
-
+            
             $ten_nguoi_nhan = $_POST['ten_nguoi_nhan'];
             $email_nguoi_nhan = $_POST['email_nguoi_nhan'];
             $sdt_nguoi_nhan = $_POST['sdt_nguoi_nhan'];
@@ -330,6 +352,8 @@ class HomeController
                 $ma_don_hang,
                 $trang_thai_id
             );
+            $gioHang = new GioHang();
+            $gioHang = $this->modelDonHang->clearGioHang($tai_khoan_id);
             header('Location:' . BASE_URL . '?act=shop');
             exit();
         }
