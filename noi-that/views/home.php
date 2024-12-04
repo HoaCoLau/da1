@@ -128,13 +128,13 @@
             </div>
             <div class="box-product">
                 <a href="<?= BASE_URL . '?act=shop' ?>">
-                    <img src="uploads/categories-6.jpg" alt="">
+                    <img src="uploads/categories-11.jpg" alt="">
                     <div class="title-product">Lighting</div>
                 </a>
             </div>
             <div class="box-product">
                 <a href="<?= BASE_URL . '?act=shop' ?>">
-                    <img src="uploads/categories-11.jpg" alt="">
+                    <img src="uploads/categories-6.jpg" alt="">
                     <div class="title-product">Sofas</div>
                 </a>
             </div>

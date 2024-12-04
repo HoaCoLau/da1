@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="Css/pay.css">
     <title>Checkout</title>
 </head>
+
 <body>
     <!-- Header -->
     <div class="header">
@@ -55,7 +57,7 @@
                         <i class="fa-regular fa-user user"></i>
                     </a>
                 <?php } ?>
-                
+
                 <a href="" class="box-cart">
                     <i class="fa-solid fa-cart-shopping cart"></i>
                 </a>
@@ -103,17 +105,21 @@
             <div class="order-summary">
                 <h2>Order Summary</h2>
                 <div class="summary-item">
-                    <?php 
+                    <?php
                     $tongGioHang = 0;
-                    foreach ($chiTietGioHang as $sanPham): 
+                    foreach ($chiTietGioHang as $sanPham):
                     ?>
                         <div class="product">
-                            <img src="<?= htmlspecialchars(BASE_URL . $sanPham['hinh_anh']) ?>" alt="<?= htmlspecialchars($sanPham['ten_san_pham']) ?>" style="height: 100px; width: 100px;">
-                            <span><?= htmlspecialchars($sanPham['ten_san_pham']) ?></span>
+                            <img src="<?= htmlspecialchars(BASE_URL . $sanPham['hinh_anh']) ?>" alt="<?= htmlspecialchars($sanPham['ten_san_pham']) ?>" class="product-image">
+                            <span class="product-name"><?= htmlspecialchars($sanPham['ten_san_pham']) ?></span>
                         </div>
-                        <div class="price"><?= formatPrice($sanPham['gia_khuyen_mai']) ?></div>
+                        <div>
+                            Số Lượng: <?= htmlspecialchars($sanPham['so_luong']) ?>
+                        </div>
+                        <div class="price">Đơn Giá: <?= formatPrice($sanPham['gia_khuyen_mai']) ?></div>
                         <div class="subtotal">
-                            <?php 
+                            Thành tiền: 
+                            <?php
                             $tongTien = $sanPham['gia_khuyen_mai'] * $sanPham['so_luong'];
                             $tongGioHang += $tongTien;
                             ?>
@@ -131,7 +137,7 @@
                 <div class="payment-options">
                     <h3>Thanh Toán</h3>
                     <label><input type="radio" name="phuong_thuc_thanh_toan_id" value="1" checked> Thanh toán khi nhận hàng</label><br>
-                    <label><input type="radio"  name="phuong_thuc_thanh_toan_id" value="2"> Thanh toán online</label>
+                    <label><input type="radio" name="phuong_thuc_thanh_toan_id" value="2"> Thanh toán online</label>
                 </div>
                 <hr>
                 <label class="confirmation">
@@ -167,4 +173,5 @@
     <script src="https://kit.fontawesome.com/eda05fcf5c.js" crossorigin="anonymous"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>
