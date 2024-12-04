@@ -146,6 +146,7 @@
     </div>
     <div class="box-shop">
         <div class="box-sidebar">
+            
             <div class="first-sidebar">
                 <div class="title-sidebar">
                     Categories
@@ -160,7 +161,6 @@
                     </div>
                 <?php endforeach; ?>
             </div>
-
             <div class="all-box-brands">
                 <div class="title-brands">Brands</div>
                 <div class="box-list-brands">

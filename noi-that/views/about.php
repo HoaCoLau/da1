@@ -55,7 +55,7 @@
                     </a>
                 <?php } ?>
                 
-                <a href="" class="box-cart">
+                <a href="<?= BASE_URL . '?act=gio-hang' ?>" class="box-cart">
                     <i class="fa-solid fa-cart-shopping cart"></i>
                 </a>
             </div>
