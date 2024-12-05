@@ -156,19 +156,19 @@
                                     <p class="pro-desc"><?= $sanPham['mo_ta'] ?></p>
 
                                     <form action="<?= BASE_URL . '?act=them-gio-hang' ?>" method="post" onsubmit="return addToCart(event)">
-                            <div class="quantity-cart-box d-flex align-items-center">
-                                <h6 class="option-title">qty:</h6>
-                                <div class="quantity">
-                                    <input type="hidden" name="san_pham_id" value="<?= $sanPham['id']; ?>">
-                                    <div class="pro-qty"><input name="so_luong" type="text" value="1"></div>
-                                </div>
-                                <div class="action_link">
-                                    <button class="btn btn-cart2" type="submit">Add to cart</button>
-                                </div>
-                            </div>
-                        </form>
+                                        <div class="quantity-cart-box d-flex align-items-center">
+                                            <h6 class="option-title">qty:</h6>
+                                            <div class="quantity">
+                                                <input type="hidden" name="san_pham_id" value="<?= $sanPham['id']; ?>">
+                                                <div class="pro-qty"><input name="so_luong" type="text" value="1"></div>
+                                            </div>
+                                            <div class="action_link">
+                                                <button class="btn btn-cart2" type="submit">Add to cart</button>
+                                            </div>
+                                        </div>
+                                    </form>
 
-                                        <script>
+                                    <script>
                                         function addToCart(event) {
                                             event.preventDefault(); // Ngăn chặn hành động mặc định của form
 
@@ -182,20 +182,20 @@
                                                 const formData = new FormData(form);
 
                                                 fetch(form.action, {
-                                                    method: 'POST',
-                                                    body: formData
-                                                })
-                                                .then(response => response.text())
-                                                .then(data => {
-                                                    // Hiển thị thông báo
-                                                    alert('Sản phẩm đã được thêm vào giỏ hàng!');
-                                                })
-                                                .catch(error => {
-                                                    console.error('Error:', error);
-                                                });
+                                                        method: 'POST',
+                                                        body: formData
+                                                    })
+                                                    .then(response => response.text())
+                                                    .then(data => {
+                                                        // Hiển thị thông báo
+                                                        alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                                                    })
+                                                    .catch(error => {
+                                                        console.error('Error:', error);
+                                                    });
                                             <?php endif; ?>
                                         }
-                                        </script>
+                                    </script>
                                     <div class="like-icon">
                                         <a class="facebook" href="#"><i class="fa fa-facebook"></i>like</a>
                                         <a class="twitter" href="#"><i class="fa fa-twitter"></i>tweet</a>
@@ -222,10 +222,12 @@
                                     <div class="tab-content reviews-tab">
                                         <div class="tab-pane fade show active" id="tab_three">
                                             <?php foreach ($listBinhLuan as $key => $binhLuan) : ?>
-                                                    <div class="total-reviews">
-                                                        <div class="rev-avatar">
-                                                            <img src="./uploads/avata1.jpg" alt="">
-                                                        </div>
+                                                <div class="total-reviews">
+                                                    <?php if ($binhLuan['trang_thai'] == 1) {
+                                                    ?>
+                                                    <div class="rev-avatar">
+                                                        <img src="./uploads/avata1.jpg" alt="">
+                                                    </div>
                                                         <div class="review-box">
                                                             <div class="post-author">
                                                                 <p><span><?= $binhLuan['ho_ten'] ?></span><br>
@@ -233,12 +235,13 @@
                                                             </div>
                                                             <p><?= $binhLuan['noi_dung'] ?></p>
                                                         </div>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                                <form action="<?= BASE_URL . '?act=post-comment' ?>" method="post" class="review-form">
+                                                    <?php } ?>
+                                                </div>
+                                            <?php endforeach; ?>
+                                            <form action="<?= BASE_URL . '?act=post-comment' ?>" method="post" class="review-form">
                                                 <div class="form-group row">
                                                     <div class="col">
-                                                        <input type="hidden" value="<?= $sanPham['id'] ?>" name="id_san_pham" >
+                                                        <input type="hidden" value="<?= $sanPham['id'] ?>" name="id_san_pham">
                                                         <label class="col-form-label"><span class="text-danger">*</span>
                                                             Comment</label>
                                                         <textarea class="form-control" name="comment" required></textarea>
@@ -249,7 +252,7 @@
                                                 <div class="buttons">
                                                     <button class="btn btn-sqr" type="submit">Submit</button>
                                                 </div>
-                                                </form> <!-- end of review-form -->
+                                            </form> <!-- end of review-form -->
                                         </div>
                                     </div>
                                 </div>

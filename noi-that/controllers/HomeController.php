@@ -32,48 +32,48 @@ class HomeController
     }
 
     public function shop()
-{
-    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $itemsPerPage = 16; 
-    $offset = ($currentPage - 1) * $itemsPerPage; 
+    {
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $itemsPerPage = 16;
+        $offset = ($currentPage - 1) * $itemsPerPage;
 
-    $listSanPham = $this->modelSanPham->getSanPhamPhanTrang($itemsPerPage, $offset);
-    $totalSanPham = $this->modelSanPham->countAllSanPham(); 
-    $totalPages = ceil($totalSanPham / $itemsPerPage); 
-
-    $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
-    foreach ($listSanPham as &$sanPham) {
-        $sanPham['hinh_anh_khac'] = $this->modelSanPham->getListHinhAnhSanPham($sanPham['id']);
-    }
-    require_once './views/Shop.php';
-}
-public function sanPhamTheoDanhMuc()
-{
-    $idDanhMuc = $_GET['id'] ?? null;
-    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $itemsPerPage = 16; 
-    $offset = ($currentPage - 1) * $itemsPerPage; 
-
-    if ($idDanhMuc) {
-        // Lấy sản phẩm theo danh mục với phân trang
-        $listSanPham = $this->modelSanPham->getSanPhamTheoDanhMuc($idDanhMuc);
-        $totalSanPham = $this->modelSanPham->countSanPhamTheoDanhMuc($idDanhMuc); // Giả sử bạn có phương thức này để đếm sản phẩm theo danh mục
-        $totalPages = ceil($totalSanPham / $itemsPerPage); 
+        $listSanPham = $this->modelSanPham->getSanPhamPhanTrang($itemsPerPage, $offset);
+        $totalSanPham = $this->modelSanPham->countAllSanPham();
+        $totalPages = ceil($totalSanPham / $itemsPerPage);
 
         $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
         foreach ($listSanPham as &$sanPham) {
             $sanPham['hinh_anh_khac'] = $this->modelSanPham->getListHinhAnhSanPham($sanPham['id']);
         }
-        
-        require_once './views/Shop.php'; // Gọi view tương ứng
-    } else {
-        // Nếu không có danh mục, lấy tất cả sản phẩm
-        $listSanPham = $this->modelSanPham->getAllSanPham();
-        $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
         require_once './views/Shop.php';
-        exit();
     }
-}
+    public function sanPhamTheoDanhMuc()
+    {
+        $idDanhMuc = $_GET['id'] ?? null;
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $itemsPerPage = 16;
+        $offset = ($currentPage - 1) * $itemsPerPage;
+
+        if ($idDanhMuc) {
+            // Lấy sản phẩm theo danh mục với phân trang
+            $listSanPham = $this->modelSanPham->getSanPhamTheoDanhMuc($idDanhMuc);
+            $totalSanPham = $this->modelSanPham->countSanPhamTheoDanhMuc($idDanhMuc); // Giả sử bạn có phương thức này để đếm sản phẩm theo danh mục
+            $totalPages = ceil($totalSanPham / $itemsPerPage);
+
+            $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
+            foreach ($listSanPham as &$sanPham) {
+                $sanPham['hinh_anh_khac'] = $this->modelSanPham->getListHinhAnhSanPham($sanPham['id']);
+            }
+
+            require_once './views/Shop.php'; // Gọi view tương ứng
+        } else {
+            // Nếu không có danh mục, lấy tất cả sản phẩm
+            $listSanPham = $this->modelSanPham->getAllSanPham();
+            $listDanhMuc = $this->modelSanPham->getAllDanhMuc();
+            require_once './views/Shop.php';
+            exit();
+        }
+    }
 
 
     public function chiTietSanPham()
@@ -174,7 +174,10 @@ public function sanPhamTheoDanhMuc()
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $comment = $_POST['comment'] ?? '';
             $san_pham_id = $_POST['id_san_pham'];
-            $tai_khoan_id = '9';
+
+            $email = $_SESSION['user'];
+            $user = $this->modelTaiKhoan->getOneUser($email);
+            $tai_khoan_id = $user['id'];
             $errors = [];
             if (empty($comment)) {
                 $errors['comment'] = 'Comment không được để trống';
@@ -196,42 +199,41 @@ public function sanPhamTheoDanhMuc()
     {
         if (isset($_SESSION['user'])) {
             $email = $_SESSION['user'];
-        $user = $this->modelTaiKhoan->getOneUser($email);
-      
-        if ($user && isset($user['id'])) {
-            $tai_khoan_id = $user['id']; 
+            $user = $this->modelTaiKhoan->getOneUser($email);
 
-            
-            $gioHang = $this->modelGioHang->getGioHangFromId(id: $tai_khoan_id);
+            if ($user && isset($user['id'])) {
+                $tai_khoan_id = $user['id'];
 
 
-            if (!$gioHang) {
-                $gioHangId = $this->modelGioHang->addGioHang($tai_khoan_id);
-                $gioHang = ['id' => $gioHangId]; 
+                $gioHang = $this->modelGioHang->getGioHangFromId(id: $tai_khoan_id);
+
+
+                if (!$gioHang) {
+                    $gioHangId = $this->modelGioHang->addGioHang($tai_khoan_id);
+                    $gioHang = ['id' => $gioHangId];
+                } else {
+                    $gioHangId = $gioHang['id'];
+                }
+
+
+
+
+                $checkSanPham = false;
+                $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHangId);
+
+
+                require_once 'views/cart.php';
             } else {
-                $gioHangId = $gioHang['id']; 
+                var_dump('Người dùng không tồn tại!');
+                die();
             }
-
-
-
-
-            $checkSanPham = false;
-            $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHangId);
-
-            
-            require_once 'views/cart.php';
         } else {
-            var_dump('Người dùng không tồn tại!');
-            die();
+            header('Location: ' . BASE_URL . '?act=login');
+            exit();
         }
-        } else {
-                header('Location: ' . BASE_URL . '?act=login');
-                exit();
-        }
-        
     }
 
-    
+
     public function addGioHang()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -240,7 +242,7 @@ public function sanPhamTheoDanhMuc()
                 $user = $this->modelTaiKhoan->getOneUser($email);
 
                 if ($user && isset($user['id'])) {
-                    $tai_khoan_id = $user['id']; 
+                    $tai_khoan_id = $user['id'];
                     $gioHang = $this->modelGioHang->getGioHangFromId(id: $tai_khoan_id);
 
                     if (!$gioHang) {
@@ -258,7 +260,7 @@ public function sanPhamTheoDanhMuc()
                     $checkSanPham = false;
                     $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHangId);
 
-                   
+
                     if (!$checkSanPham) {
                         $this->modelGioHang->addDetailGioHang($gioHangId, $san_pham_id, $so_luong);
                     }
@@ -272,8 +274,8 @@ public function sanPhamTheoDanhMuc()
                 }
             } else {
                 // Người dùng chưa đăng nhập
-                    header('Location: ' . BASE_URL . '?act=login');
-                    exit();
+                header('Location: ' . BASE_URL . '?act=login');
+                exit();
             }
         }
     }
@@ -318,7 +320,7 @@ public function sanPhamTheoDanhMuc()
     public function postthanhToan()
     {
         if ($_SERVER['REQUEST_METHOD'] ==  'POST') {
-            
+
             $ten_nguoi_nhan = $_POST['ten_nguoi_nhan'];
             $email_nguoi_nhan = $_POST['email_nguoi_nhan'];
             $sdt_nguoi_nhan = $_POST['sdt_nguoi_nhan'];
@@ -326,13 +328,13 @@ public function sanPhamTheoDanhMuc()
             $ghi_chu = $_POST['ghi_chu'];
             $tong_tien = $_POST['tong_tien'];
             $phuong_thuc_thanh_toan_id = $_POST['phuong_thuc_thanh_toan_id'];
-    
+
             $ngay_dat = date('Y-m-d');
             $trang_thai_id = 1;
-            $user = $this->modelTaiKhoan->getOneUser ($_SESSION['user']);
+            $user = $this->modelTaiKhoan->getOneUser($_SESSION['user']);
             $tai_khoan_id = $user['id'];
             $ma_don_hang = 'DH' . rand(1000, 9999);
-    
+
             // Thêm đơn hàng
             $don_hang_id = $this->modelDonHang->addDonHang(
                 $tai_khoan_id,
@@ -347,24 +349,24 @@ public function sanPhamTheoDanhMuc()
                 $ma_don_hang,
                 $trang_thai_id
             );
-    
+
             // Lấy giỏ hàng hiện tại
             $gioHang = $this->modelGioHang->getGioHangFromId($tai_khoan_id);
             $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHang['id']);
-    
+
             // Chèn dữ liệu vào bảng chi_tiet_don_hangs
             foreach ($chiTietGioHang as $sanPham) {
                 $don_gia = $sanPham['gia_khuyen_mai'] ? $sanPham['gia_khuyen_mai'] : $sanPham['gia_san_pham'];
                 $so_luong = $sanPham['so_luong'];
                 $thanh_tien = $don_gia * $so_luong;
-    
+
                 // Giả sử bạn có một phương thức trong model DonHang để thêm chi tiết đơn hàng
                 $this->modelDonHang->addChiTietDonHang($don_hang_id, $sanPham['id'], $don_gia, $so_luong, $thanh_tien);
             }
-    
+
             // Xóa giỏ hàng sau khi thanh toán
             $this->modelDonHang->clearGioHang($tai_khoan_id);
-            
+
             $_SESSION['success_message'] = "Đặt hàng thành công! Cảm ơn bạn đã mua sắm.";
             header('Location:' . BASE_URL . '?act=gio-hang');
             exit();
