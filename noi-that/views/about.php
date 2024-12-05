@@ -35,8 +35,8 @@
             </nav>
             <div class="box-logo">
                 <div class="logo">
-                    <a href="./?act=shop">
-                        <img src="./uploads/logo.png" alt="">
+                    <a href="./?act=/">
+                        <img src="./uploads/newbg.png" alt="">
                     </a>
                 </div>
             </div>

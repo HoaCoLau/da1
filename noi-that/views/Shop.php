@@ -38,7 +38,7 @@
             <div class="box-logo">
                 <div class="logo">
                     <a href="./?act=/">
-                        <img src="./uploads/logo.png" alt="">
+                        <img src="./uploads/newbg.png" alt="">
                     </a>
                 </div>
             </div>
