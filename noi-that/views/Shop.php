@@ -61,7 +61,6 @@
                     }
                 }
                 ?>
-                <!-- Form search nhe -->
                 <div class="box-search">
                     <i class="fa-solid fa-magnifying-glass search search-js"></i>
                     <div class="form" id="form" style="display: none;"> <!-- Ẩn ô tìm kiếm ban đầu -->
@@ -204,75 +203,50 @@
             </div>
             <!-- Form search nhe -->
             <?php
-            $ketQua = $listSanPham;
+            $ketQua = $listSanPham; // Giữ nguyên danh sách sản phẩm ban đầu
 
-            if (isset($_POST['sortOrder'])) {
-                $sortOrder = $_POST['sortOrder'];
+            if (isset($_POST['submit'])) {
+                $searchInput = trim($_POST['keyword']);
+                $ketQua = []; // Khởi tạo lại kết quả tìm kiếm
 
-                if ($sortOrder === 'A-Z') {
-                    // Sắp xếp theo tên sản phẩm từ A-Z
-                    usort($ketQua, function ($a, $b) {
-                        return strcmp($a['ten_san_pham'], $b['ten_san_pham']);
-                    });
-                } elseif ($sortOrder === 'Z-A') {
-                    // Sắp xếp theo tên sản phẩm từ Z-A
-                    usort($ketQua, function ($a, $b) {
-                        return strcmp($b['ten_san_pham'], $a['ten_san_pham']);
-                    });
+                if (!empty($searchInput)) {
+                    foreach ($listSanPham as $item) {
+                        // Kiểm tra xem tên sản phẩm có chứa từ khóa tìm kiếm không
+                        if (stripos($item['ten_san_pham'], $searchInput) !== false) {
+                            $ketQua[] = $item; // Thêm sản phẩm vào kết quả nếu tìm thấy
+                        }
+                    }
                 }
             }
             ?>
             <!-- Form search nhe -->
 
             <div class="all-box-new-product">
-                <!-- Thay đổi dư liệu một chút nhé -->
-                <?php foreach ($ketQua as $key => $sanPham): ?>
-                    <div class="new-product-1">
-                        <div class="pic-product-1">
-                            <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
-                                <img id="Pic-product-1" src="<?= BASE_URL . $sanPham['hinh_anh'] ?>" alt="">
-                                <script>
-                                    let newProduct = document.getElementById('Pic-product-1');
-
-                                    newProduct.addEventListener('mouseout', function() {
-                                        newProduct.src = '<?= BASE_URL . $sanPham['hinh_anh'] ?>';
-                                    });
-                                </script>
-                            </a>
-                            <div class="box-icon-new-product">
-                                <i style="font-size: 19px;" id="cart-Product" class="fa-solid fa-cart-shopping"></i>
+                <?php if (empty($ketQua)): ?>
+                    <p>Không tìm thấy sản phẩm nào phù hợp với từ khóa của bạn.</p>
+                <?php else: ?>
+                    <?php foreach ($ketQua as $key => $sanPham): ?>
+                        <div class="new-product-1">
+                            <div class="pic-product-1">
                                 <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
-                                    <i style="font-size: 18px;" id="search-Product" class="fa-solid fa-magnifying-glass"></i>
+                                    <img id="Pic-product-1" src="<?= BASE_URL . $sanPham['hinh_anh'] ?>" alt="">
                                 </a>
                             </div>
+                            <div class="title-new-product">
+                                <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
+                                    <?= htmlspecialchars($sanPham['ten_san_pham']) ?></a>
+                            </div>
+                            <div>
+                                <?php if ($sanPham['gia_khuyen_mai'] && $sanPham['gia_khuyen_mai'] > 0) { ?>
+                                    <span class="price-old"><?= formatPrice($sanPham['gia_san_pham']) . 'đ'  ?> </span>
+                                    <span class="price-new"><?= formatPrice($sanPham['gia_khuyen_mai']) . 'đ' ?></span>
+                                <?php } else { ?>
+                                    <span class="price-old" style="text-decoration: none; color:red; font-size:larger;"><?= formatPrice($sanPham['gia_san_pham']) . 'đ'  ?></span>
+                                <?php } ?>
+                            </div>
                         </div>
-                        <div class="box-star" style="width: 100%; height: 23px;">
-                            <i style="color: #fcad02; margin-left: 0;" class="fa-solid fa-star"></i>
-                            <i style="color: #fcad02;" class="fa-solid fa-star"></i>
-                            <i style="color: #fcad02;" class="fa-solid fa-star"></i>
-                            <i style="color: #fcad02;" class="fa-solid fa-star"></i>
-                            <i style="color: #fcad02;" class="fa-solid fa-star"></i>
-                            <span style="margin-left: 5px; color: rgb(201, 201, 201); font-size: 12px;">(140 review)</span>
-                        </div>
-                        <div class="title-new-product">
-                            <a href="<?= BASE_URL . '?act=chi-tiet-san-pham&id_san_pham=' . $sanPham['id'] ?>">
-                                <!-- Thay đổi dư liệu một chút nhé -->
-                                <?= htmlspecialchars($sanPham['ten_san_pham']) ?></a>
-                            <!-- Thay đổi dư liệu một chút nhé -->
-
-                        </div><br>
-                        <div>
-                            <?php if ($sanPham['gia_khuyen_mai'] && $sanPham['gia_khuyen_mai'] > 0) { ?>
-                                <span class="price-old"><?= formatPrice($sanPham['gia_san_pham']) . 'đ'  ?> </span>
-                                <span class="price-new"><?= formatPrice($sanPham['gia_khuyen_mai']) . 'đ' ?></span>
-
-                            <?php } else { ?>
-                                <span class="price-old" style="text-decoration: none; color:red; font-size:larger;"><?= formatPrice($sanPham['gia_san_pham']) . 'đ'  ?></span>
-                            <?php } ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             <div class="pagination">
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
@@ -401,7 +375,7 @@
 
         searchIcon.addEventListener('click', function() {
             // Toggle lớp 'show' cho ô tìm kiếm
-            searchForm.classList.toggle('show');
+            searchForm.style.display = searchForm.style.display === 'block' ? 'none' : 'block';
         });
     });
     $(function() {

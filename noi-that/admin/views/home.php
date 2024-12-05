@@ -7,8 +7,7 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Trang chủ</h1>
+        <div class="col-sm-6"><h1>Dashboard</h1>
         </div>
 
       </div>
@@ -24,7 +23,34 @@
           <div class="card">
             
             <!-- /.card-header -->
-            
+            <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Sản phẩm đã bán</div>
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $soSanPhamDaBan ?></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Doanh thu</div>
+                    <div class="card-body">
+                        <h5 class="card-title"><?= formatPrice($doanhThu) ?>đ</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Số đơn hàng</div>
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $soDonHang ?></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
             <!-- /.card-body -->
           </div>
           <!-- /.card -->

@@ -160,6 +160,7 @@ public function sanPhamTheoDanhMuc()
                 $mat_khau = password_hash($password, PASSWORD_BCRYPT);
                 $chuc_vu_id = 2;
                 $this->modelTaiKhoan->insertTaiKhoan($ho_ten, $email, $so_dien_thoai, $mat_khau, $chuc_vu_id);
+                $_SESSION['success_message'] = "Đăng ký thành công! Chào mừng bạn đến với Family.";
                 header('Location:' . BASE_URL . '?act=login');
             } else {
                 $_SESSION['flash'] = true;
@@ -196,39 +197,34 @@ public function sanPhamTheoDanhMuc()
         if (isset($_SESSION['user'])) {
             $email = $_SESSION['user'];
         $user = $this->modelTaiKhoan->getOneUser($email);
-        // Kiểm tra xem người dùng có tồn tại trong hệ thống không
+      
         if ($user && isset($user['id'])) {
-            $tai_khoan_id = $user['id']; // Gán tai_khoan_id từ người dùng đã đăng nhập
+            $tai_khoan_id = $user['id']; 
 
-            // Kiểm tra xem người dùng đã có giỏ hàng chưa
+            
             $gioHang = $this->modelGioHang->getGioHangFromId(id: $tai_khoan_id);
 
-            // Nếu chưa có giỏ hàng, tạo giỏ hàng mới
+
             if (!$gioHang) {
                 $gioHangId = $this->modelGioHang->addGioHang($tai_khoan_id);
-                $gioHang = ['id' => $gioHangId]; // Lưu lại ID giỏ hàng mới tạo
+                $gioHang = ['id' => $gioHangId]; 
             } else {
-                $gioHangId = $gioHang['id']; // Giỏ hàng đã tồn tại
+                $gioHangId = $gioHang['id']; 
             }
 
 
 
-            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+
             $checkSanPham = false;
             $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHangId);
 
-            // var_dump($chiTietGioHang);die;
-            // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào chi tiết giỏ hàng
-
-            // Xác nhận thêm giỏ hàng thành công
+            
             require_once 'views/cart.php';
         } else {
-            // Người dùng không tồn tại trong hệ thống
             var_dump('Người dùng không tồn tại!');
             die();
         }
         } else {
-            // Người dùng chưa đăng nhập
                 header('Location: ' . BASE_URL . '?act=login');
                 exit();
         }
@@ -239,20 +235,14 @@ public function sanPhamTheoDanhMuc()
     public function addGioHang()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Kiểm tra xem người dùng đã đăng nhập chưa
             if (isset($_SESSION['user'])) {
-                // Lấy thông tin người dùng từ session
                 $email = $_SESSION['user'];
                 $user = $this->modelTaiKhoan->getOneUser($email);
 
-                // Kiểm tra xem người dùng có tồn tại trong hệ thống không
                 if ($user && isset($user['id'])) {
-                    $tai_khoan_id = $user['id']; // Gán tai_khoan_id từ người dùng đã đăng nhập
-
-                    // Kiểm tra xem người dùng đã có giỏ hàng chưa
+                    $tai_khoan_id = $user['id']; 
                     $gioHang = $this->modelGioHang->getGioHangFromId(id: $tai_khoan_id);
 
-                    // Nếu chưa có giỏ hàng, tạo giỏ hàng mới
                     if (!$gioHang) {
                         $gioHangId = $this->modelGioHang->addGioHang($tai_khoan_id);
                         $gioHang = ['id' => $gioHangId]; // Lưu lại ID giỏ hàng mới tạo
@@ -268,8 +258,7 @@ public function sanPhamTheoDanhMuc()
                     $checkSanPham = false;
                     $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHangId);
 
-                    // var_dump($chiTietGioHang);die;
-                    // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào chi tiết giỏ hàng
+                   
                     if (!$checkSanPham) {
                         $this->modelGioHang->addDetailGioHang($gioHangId, $san_pham_id, $so_luong);
                     }
@@ -337,16 +326,15 @@ public function sanPhamTheoDanhMuc()
             $ghi_chu = $_POST['ghi_chu'];
             $tong_tien = $_POST['tong_tien'];
             $phuong_thuc_thanh_toan_id = $_POST['phuong_thuc_thanh_toan_id'];
-
-
-
+    
             $ngay_dat = date('Y-m-d');
-
             $trang_thai_id = 1;
-            $user = $this->modelTaiKhoan->getOneUser($_SESSION['user']);
-            $tai_khoan_id =   $user['id'];
+            $user = $this->modelTaiKhoan->getOneUser ($_SESSION['user']);
+            $tai_khoan_id = $user['id'];
             $ma_don_hang = 'DH' . rand(1000, 9999);
-            $this->modelDonHang->addDonHang(
+    
+            // Thêm đơn hàng
+            $don_hang_id = $this->modelDonHang->addDonHang(
                 $tai_khoan_id,
                 $ten_nguoi_nhan,
                 $email_nguoi_nhan,
@@ -359,9 +347,26 @@ public function sanPhamTheoDanhMuc()
                 $ma_don_hang,
                 $trang_thai_id
             );
-            $gioHang = new GioHang();
-            $gioHang = $this->modelDonHang->clearGioHang($tai_khoan_id);
-            header('Location:' . BASE_URL . '?act=shop');
+    
+            // Lấy giỏ hàng hiện tại
+            $gioHang = $this->modelGioHang->getGioHangFromId($tai_khoan_id);
+            $chiTietGioHang = $this->modelGioHang->getDetailGioHang($gioHang['id']);
+    
+            // Chèn dữ liệu vào bảng chi_tiet_don_hangs
+            foreach ($chiTietGioHang as $sanPham) {
+                $don_gia = $sanPham['gia_khuyen_mai'] ? $sanPham['gia_khuyen_mai'] : $sanPham['gia_san_pham'];
+                $so_luong = $sanPham['so_luong'];
+                $thanh_tien = $don_gia * $so_luong;
+    
+                // Giả sử bạn có một phương thức trong model DonHang để thêm chi tiết đơn hàng
+                $this->modelDonHang->addChiTietDonHang($don_hang_id, $sanPham['id'], $don_gia, $so_luong, $thanh_tien);
+            }
+    
+            // Xóa giỏ hàng sau khi thanh toán
+            $this->modelDonHang->clearGioHang($tai_khoan_id);
+            
+            $_SESSION['success_message'] = "Đặt hàng thành công! Cảm ơn bạn đã mua sắm.";
+            header('Location:' . BASE_URL . '?act=gio-hang');
             exit();
         }
     }

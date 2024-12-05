@@ -76,8 +76,8 @@
                         <i class="fa-regular fa-user user"></i>
                     </a>
                 <?php } ?>
-                
-              
+
+
             </div>
         </div>
     </div>
@@ -90,7 +90,7 @@
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="./?act=/"><i class="fa fa-home"></i></a></li>
                                 <li class="breadcrumb-item"><a href="./?act=shop">shop</a></li>
-          
+
                             </ul>
                         </nav>
                     </div>
@@ -99,72 +99,76 @@
         </div>
     </div>
 
-
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <p id="popupMessage"></p>
+        <button onclick="closePopup()">Đóng</button>
+    </div>
 
     <div class="cart">
-            <div class="cart-table">
-              <table>
+        <div class="cart-table">
+            <table>
                 <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Thao tac</th>
-                  </tr>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Thao tac</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <?php
                     $tongGioHang = 0;
-                    foreach($chiTietGioHang as $key=>$sanPham): 
-                         ?>
-                  <tr>
-                    <td class="product">
-                      <img    src="<?= BASE_URL . $sanPham['hinh_anh']  ?>"      alt="Asgaard Sofa" style="height: 100px ; width: 100px; margin: 20px;">
-                      <span><?=  $sanPham['ten_san_pham']  ?>"</span>
-                    </td>
-                    <td class="price"> <?= $sanPham['gia_khuyen_mai']  ?></td>
-                    <td class="quantity">
-                      <input type="number" value="<?= $sanPham['so_luong'] ?>" min="1">
-                    </td>
-                    <td class="subtotal"><span>
-                    <?php
-                        $tongTien = 0 ;
-                        if($sanPham){
-                            $tongTien = $sanPham['gia_khuyen_mai'] * $sanPham['so_luong'];
-                        }else{
-                            $tongTien = $sanPham['gia_khuyen_mai'] * $sanPham['so_luong'];
-                        }
-                        $tongGioHang += $tongTien ;
-                        echo formatPrice( $tongTien);
-                        ?>
-                    </span>
-                        
-                    </td>
-                    <td class="delete">
-                      <span class="delete-icon">🗑️</span>
-                    </td>
-                  </tr>
+                    foreach ($chiTietGioHang as $key => $sanPham):
+                    ?>
+                        <tr>
+                            <td class="product">
+                                <img src="<?= BASE_URL . $sanPham['hinh_anh']  ?>" alt="Asgaard Sofa" style="height: 100px ; width: 100px; margin: 20px;">
+                                <span><?= $sanPham['ten_san_pham']  ?>"</span>
+                            </td>
+                            <td class="price"> <?= $sanPham['gia_khuyen_mai']  ?></td>
+                            <td class="quantity">
+                                <input type="number" value="<?= $sanPham['so_luong'] ?>" min="1">
+                            </td>
+                            <td class="subtotal"><span>
+                                    <?php
+                                    $tongTien = 0;
+                                    if ($sanPham) {
+                                        $tongTien = $sanPham['gia_khuyen_mai'] * $sanPham['so_luong'];
+                                    } else {
+                                        $tongTien = $sanPham['gia_khuyen_mai'] * $sanPham['so_luong'];
+                                    }
+                                    $tongGioHang += $tongTien;
+                                    echo formatPrice($tongTien);
+                                    ?>
+                                </span>
+
+                            </td>
+                            <td class="delete">
+                                <span class="delete-icon">🗑️</span>
+                            </td>
+                        </tr>
                 </tbody>
 
-                <?php  endforeach ;?>
-                
-              </table>
+            <?php endforeach; ?>
+
+            </table>
+        </div>
+        <div class="cart-totals">
+            <h3>Cart Totals</h3>
+            <div class="totals-row">
+                <td><?= formatPrice($tongGioHang) ?></td>
             </div>
-            <div class="cart-totals">
-              <h3>Cart Totals</h3>
-              <div class="totals-row">
-              <td><?= formatPrice($tongGioHang) ?></td>
-              </div>
-              <div class="totals-row total">
+            <div class="totals-row total">
                 <span>Total</span>
                 <td><?= formatPrice($tongGioHang) ?></td>
-              </div>
-              <a class="btn btn-sqr d-block " href="<?= BASE_URL .'?act=thanh-toan' ?>">Check Out</a>
             </div>
-          </div>
-          
-   
+            <a class="btn btn-sqr d-block " href="<?= BASE_URL . '?act=thanh-toan' ?>">Check Out</a>
+        </div>
+    </div>
+
+
 
 
 
@@ -311,3 +315,108 @@
 
 <script src="https://kit.fontawesome.com/eda05fcf5c.js" crossorigin="anonymous"></script>
 <script src="./js/main.js?v=<?php echo time() ?>"></script>
+<style>
+    /* CSS cho overlay */
+.overlay {
+    display: none; /* Ẩn overlay mặc định */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Màu nền tối với độ trong suốt */
+    z-index: 999;
+}
+
+/* CSS cho popup */
+.popup {
+    display: none; /* Ẩn popup mặc định */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #ffffff, #f0f0f0); /* Gradient nền */
+    border-radius: 15px; /* Bo góc */
+    padding: 30px;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+    max-width: 400px; /* Chiều rộng tối đa */
+    width: 90%; /* Chiều rộng 90% */
+    animation: fadeIn 0.3s; /* Hiệu ứng xuất hiện */
+}
+
+/* Hiệu ứng khi popup được hiển thị */
+.popup.active {
+    display: block; /* Hiện popup khi có class active */
+}
+
+/* Hiệu ứng khi overlay được hiển thị */
+.overlay.active {
+    display: block; /* Hiện overlay khi có class active */
+}
+
+/* Nút đóng */
+.popup button {
+    background-color: #28a745; /* Màu nền nút */
+    color: white; /* Màu chữ */
+    border: none; /* Không viền */
+    border-radius: 5px; /* Bo góc */
+    padding: 12px 20px; /* Padding cho nút */
+    cursor: pointer; /* Con trỏ chuột khi hover */
+    transition: background-color 0.3s, transform 0.2s; /* Hiệu ứng chuyển màu và phóng to */
+    font-size: 16px; /* Kích thước chữ */
+}
+
+.popup button:hover {
+    background-color: #218838; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+/* Hiệu ứng fadeIn */
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Bắt đầu với độ mờ 0 */
+        transform: translate(-50%, -60%); /* Di chuyển lên trên một chút */
+    }
+    to {
+        opacity: 1; /* Kết thúc với độ mờ 1 */
+        transform: translate(-50%, -50%); /* Về vị trí giữa */
+    }
+}
+
+/* Nội dung thông báo */
+#popupMessage {
+    font-size: 18px; /* Kích thước chữ lớn hơn */
+    margin-bottom: 20px; /* Khoảng cách dưới */
+    text-align: center; /* Căn giữa */
+    color: #333; /* Màu chữ */
+    line-height: 1.5; /* Khoảng cách giữa các dòng */
+}
+</style>
+<script>
+    // Hàm hiển thị popup
+    function showPopup(message) {
+        document.getElementById('popupMessage').innerText = message;
+        document.getElementById('popup').classList.add('active');
+        document.getElementById('overlay').classList.add('active');
+    }
+
+    // Hàm đóng popup
+    function closePopup() {
+        document.getElementById('popup').classList.remove('active');
+        document.getElementById('overlay').classList.remove('active');
+    }
+
+    // Kiểm tra và hiển thị thông báo từ PHP
+    <?php if (isset($_SESSION['success_message'])): ?>
+        showPopup("<?= htmlspecialchars($_SESSION['success_message']) ?>");
+        <?php unset($_SESSION['success_message']); // Xóa thông báo sau khi hiển thị 
+        ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error_message'])): ?>
+        showPopup("<?= htmlspecialchars($_SESSION['error_message']) ?>");
+        <?php unset($_SESSION['error_message']); // Xóa thông báo sau khi hiển thị 
+        ?>
+    <?php endif; ?>
+</script>

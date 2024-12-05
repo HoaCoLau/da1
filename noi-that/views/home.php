@@ -44,9 +44,6 @@
                 </div>
             </div>
             <div class="box-icon">
-                <a href="" class="box-search">
-                    <i class="fa-solid fa-magnifying-glass search"></i>
-                </a>
                 <a href=""></a>
                 <?php if (isset($_SESSION['user'])) { ?>
                     <?= $_SESSION['user_name'];  ?>

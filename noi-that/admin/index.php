@@ -13,6 +13,7 @@ require_once './controllers/AdminTaiKhoanControllers.php';
 // require_once './controllers/AdminSanPhamControllers.php';
 
 // Require toàn bộ file Models
+require_once './models/AdminBaoCao.php';
 require_once './models/AdminDanhMuc.php';
 require_once './models/AdminSanPham.php';
 require_once './models/AdminDonHang.php';
@@ -31,7 +32,7 @@ if ($act !== 'login-admin' && $act !== 'check-login-admin') {
 
 match ($act) {
     // route dm
-    '/' => (new AdminBaoCaoControllers())->hone(),
+    '/' => (new AdminBaoCaoControllers())->home(),
 
 
     'danh-muc' => (new AdminDanhMucControllers())->danhSachDanhMuc(),
