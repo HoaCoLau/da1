@@ -56,7 +56,7 @@ public function sanPhamTheoDanhMuc()
 
     if ($idDanhMuc) {
         // Lấy sản phẩm theo danh mục với phân trang
-        $listSanPham = $this->modelSanPham->getSanPhamTheoDanhMuc($idDanhMuc, $itemsPerPage, $offset);
+        $listSanPham = $this->modelSanPham->getSanPhamTheoDanhMuc($idDanhMuc);
         $totalSanPham = $this->modelSanPham->countSanPhamTheoDanhMuc($idDanhMuc); // Giả sử bạn có phương thức này để đếm sản phẩm theo danh mục
         $totalPages = ceil($totalSanPham / $itemsPerPage); 
 
@@ -193,7 +193,8 @@ public function sanPhamTheoDanhMuc()
 
     public function gioHang()
     {
-        $email = $_SESSION['user'];
+        if (isset($_SESSION['user'])) {
+            $email = $_SESSION['user'];
         $user = $this->modelTaiKhoan->getOneUser($email);
         // Kiểm tra xem người dùng có tồn tại trong hệ thống không
         if ($user && isset($user['id'])) {
@@ -226,6 +227,12 @@ public function sanPhamTheoDanhMuc()
             var_dump('Người dùng không tồn tại!');
             die();
         }
+        } else {
+            // Người dùng chưa đăng nhập
+                header('Location: ' . BASE_URL . '?act=login');
+                exit();
+        }
+        
     }
 
     
@@ -276,8 +283,8 @@ public function sanPhamTheoDanhMuc()
                 }
             } else {
                 // Người dùng chưa đăng nhập
-                var_dump('Chưa đăng nhập!');
-                die();
+                    header('Location: ' . BASE_URL . '?act=login');
+                    exit();
             }
         }
     }

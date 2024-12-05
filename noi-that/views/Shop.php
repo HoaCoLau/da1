@@ -44,9 +44,27 @@
             </div>
             <div class="box-icon">
                 <!-- Form search nhe -->
+                <?php
+                $ketQua = $listSanPham; // Giữ nguyên danh sách sản phẩm ban đầu
+
+                if (isset($_POST['submit'])) {
+                    $searchInput = trim($_POST['keyword']);
+                    $ketQua = []; // Khởi tạo lại kết quả tìm kiếm
+
+                    if (!empty($searchInput)) {
+                        foreach ($listSanPham as $item) {
+                            // Kiểm tra xem tên sản phẩm có chứa từ khóa tìm kiếm không
+                            if (stripos($item['ten_san_pham'], $searchInput) !== false) {
+                                $ketQua[] = $item; // Thêm sản phẩm vào kết quả nếu tìm thấy
+                            }
+                        }
+                    }
+                }
+                ?>
+                <!-- Form search nhe -->
                 <div class="box-search">
                     <i class="fa-solid fa-magnifying-glass search search-js"></i>
-                    <div class="form" id="form">
+                    <div class="form" id="form" style="display: none;"> <!-- Ẩn ô tìm kiếm ban đầu -->
                         <form action="" method="POST">
                             <div class="searchIn">
                                 <input type="text" name="keyword" class="searchInput-js" placeholder="Tìm kiếm sản phẩm..." value="<?= isset($_POST['keyword']) ? htmlspecialchars($_POST['keyword'], ENT_QUOTES) : '' ?>">
@@ -57,8 +75,8 @@
                         </form>
                     </div>
                 </div>
-                <a href=""></a>
                 <!-- end Form search nhe -->
+                <a href=""></a>
                 <?php if (isset($_SESSION['user'])) { ?>
                     <?= $_SESSION['user_name'];  ?>
                     <a class="nav-link" onclick="return confirm('Ban co muon dang xuat?')" href="<?= BASE_URL . '?act=logout' ?>"><i class="fas fa-sign-out-alt"></i></a>
@@ -75,21 +93,7 @@
             </div>
         </div>
     </div>
-    <!-- Form search nhe -->
-    <?php
-    $ketQua = $listSanPham;
-    if (isset($_POST['submit'])) {
-        $searchInput = trim($_POST['keyword']);
-        $ketQua = [];
-        if (!empty($searchInput)) {
-            foreach ($listSanPham as $item) {
-                if (strpos($item['ten_san_pham'], $searchInput) === 0) {
-                    $ketQua[] = $item;
-                }
-            }
-        }
-    }
-    ?>
+
     <!-- Form search nhe -->
     <div class="box-banner-shop">
         <div class="in-box-banner">
@@ -146,7 +150,7 @@
     </div>
     <div class="box-shop">
         <div class="box-sidebar">
-            
+
             <div class="first-sidebar">
                 <div class="title-sidebar">
                     Categories
@@ -390,8 +394,16 @@
 </body>
 
 </html>
-
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchIcon = document.querySelector('.search-js');
+        const searchForm = document.getElementById('form');
+
+        searchIcon.addEventListener('click', function() {
+            // Toggle lớp 'show' cho ô tìm kiếm
+            searchForm.classList.toggle('show');
+        });
+    });
     $(function() {
         $("#example1").DataTable({
             "responsive": true,

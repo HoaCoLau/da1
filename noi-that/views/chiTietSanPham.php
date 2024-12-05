@@ -75,7 +75,7 @@
                         <i class="fa-regular fa-user user"></i>
                     </a>
                 <?php } ?>
-                
+
                 <a href="<?= BASE_URL . '?act=gio-hang' ?>" class="box-cart">
                     <i class="fa-solid fa-cart-shopping cart"></i>
                 </a>
@@ -155,19 +155,47 @@
                                     </div>
                                     <p class="pro-desc"><?= $sanPham['mo_ta'] ?></p>
 
-                                    <form action="<?= BASE_URL . '?act=them-gio-hang' ?>" method="post" >
-                                    <div class="quantity-cart-box d-flex align-items-center">
-                                        <h6 class="option-title">qty:</h6>
-                                        <div class="quantity">
-                                            <input type="hidden" name="san_pham_id" value="<?= $sanPham['id']; ?>">
-                                            <div class="pro-qty"><input name="so_luong" type="text" value="1"></div>
-                                        </div>
-                                        <div class="action_link">
-                                            
-                                            <button class="btn btn-cart2" href="">Add to cart</button>
-                                        </div>
-                                    </div>
-                                    </form>
+                                    <form action="<?= BASE_URL . '?act=them-gio-hang' ?>" method="post" onsubmit="return addToCart(event)">
+                            <div class="quantity-cart-box d-flex align-items-center">
+                                <h6 class="option-title">qty:</h6>
+                                <div class="quantity">
+                                    <input type="hidden" name="san_pham_id" value="<?= $sanPham['id']; ?>">
+                                    <div class="pro-qty"><input name="so_luong" type="text" value="1"></div>
+                                </div>
+                                <div class="action_link">
+                                    <button class="btn btn-cart2" type="submit">Add to cart</button>
+                                </div>
+                            </div>
+                        </form>
+
+                                        <script>
+                                        function addToCart(event) {
+                                            event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                                            // Kiểm tra xem người dùng đã đăng nhập chưa
+                                            <?php if (!isset($_SESSION['user'])): ?>
+                                                // Nếu chưa đăng nhập, chuyển đến trang đăng nhập
+                                                window.location.href = 'http://localhost/noi-that/?act=login';
+                                            <?php else: ?>
+                                                // Nếu đã đăng nhập, thực hiện thêm vào giỏ hàng
+                                                const form = event.target;
+                                                const formData = new FormData(form);
+
+                                                fetch(form.action, {
+                                                    method: 'POST',
+                                                    body: formData
+                                                })
+                                                .then(response => response.text())
+                                                .then(data => {
+                                                    // Hiển thị thông báo
+                                                    alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                                                })
+                                                .catch(error => {
+                                                    console.error('Error:', error);
+                                                });
+                                            <?php endif; ?>
+                                        }
+                                        </script>
                                     <div class="like-icon">
                                         <a class="facebook" href="#"><i class="fa fa-facebook"></i>like</a>
                                         <a class="twitter" href="#"><i class="fa fa-twitter"></i>tweet</a>

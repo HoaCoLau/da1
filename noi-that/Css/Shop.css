@@ -15,7 +15,14 @@
     background-color: #FF9B42; /* Màu nền khi hover */
     color: white; /* Màu chữ khi hover */
 }
+.form {
+    display: none; /* Ẩn ô tìm kiếm ban đầu */
+    transition: all 0.3s ease; /* Hiệu ứng chuyển tiếp */
+}
 
+.form.show {
+    display: block; /* Hiển thị ô tìm kiếm khi có lớp 'show' */
+}
 /* Thay đổi màu sắc khi thẻ a được chọn (active) */
 .box-sidebar .in-sidebar .name a:active {
     background-color: #e68a00; /* Màu nền khi nhấn */
